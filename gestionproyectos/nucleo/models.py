@@ -10,7 +10,7 @@ class usuario(models.Model):
         return self.dni
 
 class cliente(models.Model):
-    id = models.SmallIntegerField(auto_increment=True, primary_key=True)
+    
     dni=models.CharField(max_length=9, unique=True)
     nombre=models.CharField(max_length=40)
     apellidos=models.CharField(max_length=60)
@@ -25,7 +25,7 @@ class cliente(models.Model):
         return self.dni
 
 class empleado(models.Model):
-    id = models.SmallIntegerField(auto_increment=True, primary_key=True)
+    
     dni=models.CharField(max_length=9, unique=True)
     nombre=models.CharField(max_length=40)
     apellidos=models.CharField(max_length=60)
