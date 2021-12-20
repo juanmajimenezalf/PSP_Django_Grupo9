@@ -36,11 +36,6 @@ class empleados(models.Model):
     def __str__(self):
         return self.dni
     
-
-    
-    def __str__(self):
-        return self.fechaInscripcion
-    
 class categorias(models.Model):
        
     nombre: models.charField(max_length=150)
@@ -69,3 +64,6 @@ class participa(models.Model):
     idProyecto: models.ForeignKey(proyectos, on_delete=models.CASCADE)
     fechaInscripcion: models.DateField()
     rol: models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.fechaInscripcion
