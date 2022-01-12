@@ -7,7 +7,7 @@ class usuario(models.Model):
     password=models.CharField(max_length=255)
 
     def __str__(self):
-        return self.dni
+        return self.username
 
 class cliente(models.Model):
     
@@ -16,7 +16,7 @@ class cliente(models.Model):
     apellidos=models.CharField(max_length=60)
     direccion=models.CharField(max_length=150)
     fechaNacimiento=models.DateField()
-    fechaAlta=models.DateField()
+    fechaAlta=models.DateField(auto_now_add=True)
     activo=models.SmallIntegerField()
     idUsuario=models.ForeignKey(usuario, on_delete=models.CASCADE)
 
@@ -38,15 +38,15 @@ class empleados(models.Model):
     
 class categorias(models.Model):
        
-    nombre: models.charField(max_length=150)
-    foto: models.charField(max_length=255)
+    nombre: models.CharField(max_length=150)
+    foto: models.CharField(max_length=255)
     
     def __str__(self):
         return self.nombre
         
 class proyectos(models.Model):
     
-    titulo: models.charField(max_length=150)
+    titulo: models.CharField(max_length=150)
     descripcion: models.CharField(max_length=255)
     nivel: models.IntegerField()
     fechainicion: models.DateField()
