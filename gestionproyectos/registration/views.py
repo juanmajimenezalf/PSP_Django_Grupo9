@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.views.generic import CreateView, UpdateView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from registration.forms import EditUserProfileForm
 
 from registration.forms import UserCreationFormEmail

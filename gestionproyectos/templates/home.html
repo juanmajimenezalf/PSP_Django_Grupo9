@@ -13,19 +13,12 @@
         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
           <li><a class="dropdown-item" href="{% url 'viewProfile' %}">Profile</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="">Logout</a></li>
+          <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
         </ul>
       </div>
     </div>
   </div>
 </header>
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="">Log Out</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
-  <a href="{% url 'registro' %}">Registro</a>
-{% endif %}
+
 
 {% endblock %}

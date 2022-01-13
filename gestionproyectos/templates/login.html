@@ -5,7 +5,7 @@
 {% block content %}
 <form method="post">
   {% csrf_token %}
-  <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  <h1 class="h3 mb-3 fw-normal">Por favor inicie sesion</h1>
 
   <div class="form-floating">
     {{ form.username }}
@@ -13,7 +13,7 @@
   </div>
   <div class="form-floating">
     {{ form.password }}
-    <label for="floatingPassword">Password</label>
+    <label for="floatingPassword"></label>
   </div>
 
   <div class="checkbox mb-3">
@@ -21,7 +21,7 @@
       <input type="checkbox" value="remember-me"> Remember me
     </label>
   </div>
-  <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-  <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+  <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar Sesion</button>
+  <a class="w-100 btn btn-lg btn-primary" href="{% url 'registro' %}" role="button">Registro</a>
 </form>
 {% endblock %}
