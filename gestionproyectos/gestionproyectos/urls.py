@@ -21,7 +21,7 @@ from registration.views import Login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', Login.as_view()),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', Login.as_view(), name='login'),
+    path('home', TemplateView.as_view(template_name='home.html'), name='home'),
     path('acounts/', include('registration.urls')),
 ]

@@ -3,16 +3,17 @@ from django.db import models
 
 class usuario(models.Model):
     
-    username=models.CharField(max_length=40)
-    password=models.CharField(max_length=255)
-    nombre=models.CharField(max_length=40)
-    apellidos=models.CharField(max_length=60)
-    direccion=models.CharField(max_length=150)
-    biografia=models.CharField(max_length=255)
-    fechaNacimiento=models.DateField()
-    fechaAlta=models.DateField(auto_now_add=True)
-    activo=models.SmallIntegerField()
-    rol=models.CharField(max_length=20)
+    username=models.CharField(max_length=40,default=False)
+    password=models.CharField(max_length=255,default=False)
+    nombre=models.CharField(max_length=40,default=False)
+    apellidos=models.CharField(max_length=60,default=False)
+    direccion=models.CharField(max_length=150,default=False)
+    biografia=models.CharField(max_length=255,default=False)
+    fechaNacimiento=models.DateField(default=False)
+    fechaAlta=models.DateField(default=False)
+    activo=models.SmallIntegerField(default=False)
+    is_cliente = models.BooleanField('cliente status', default=False)
+    is_empleado = models.BooleanField('empleado status', default=False)
 
     def __str__(self):
         return self.username
