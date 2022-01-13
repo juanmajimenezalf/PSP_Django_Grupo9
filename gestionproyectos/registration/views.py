@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import LoginView
+from registration.forms import EditUserProfileForm
 
 from registration.forms import UserCreationFormEmail
 
@@ -33,3 +34,10 @@ class SignupView(CreateView):
         form.yields['password2'].widget=forms.PasswordInput(attrs={'class':'form-control mb2',
         'placeholder':'Repite la contraseña'})
         return form
+class UserEditView(UpdateView):
+    form_class = EditUserProfileForm
+    template_name = 'registration/profile.html'
+    success_url = reverse_lazy('nucleo:home')
+
+    def get_object(self):
+        return self.request.user
