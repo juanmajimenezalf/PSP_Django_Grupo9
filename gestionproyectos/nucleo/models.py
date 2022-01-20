@@ -1,9 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
-class usuario(models.Model):
+class User(AbstractUser):
     
-    username=models.CharField(max_length=40,default=False)
+    username=models.CharField(max_length=40,default=False, unique=True)
     password=models.CharField(max_length=255,default=False)
     nombre=models.CharField(max_length=40,default=False)
     apellidos=models.CharField(max_length=60,default=False)
@@ -34,7 +35,7 @@ class proyectos(models.Model):
     nivel: models.IntegerField()
     fechainicion: models.DateField()
     fechafin: models.DateField()
-    idEmpleado: models.ForeignKey(usuario, on_delete=models.CASCADE)
+    idEmpleado: models.ForeignKey(User, on_delete=models.CASCADE)
     idCategoria: models.ForeignKey(categorias, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -43,7 +44,7 @@ class proyectos(models.Model):
 
 class participa(models.Model):
     
-    idCliente: models.ForeignKey(usuario, on_delete=models.CASCADE)
+    idCliente: models.ForeignKey(User, on_delete=models.CASCADE)
     idProyecto: models.ForeignKey(proyectos, on_delete=models.CASCADE)
     fechaInscripcion: models.DateField()
     rol: models.CharField(max_length=100)

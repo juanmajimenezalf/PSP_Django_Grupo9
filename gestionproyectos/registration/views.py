@@ -13,7 +13,7 @@ from registration.forms import UserCreationFormEmail
 # Create your views here.
 
 class Login(LoginView):
-    template_name = 'login.html'
+    template_name = 'registration/login.html'
 
 
 class SignupView(CreateView):
@@ -25,13 +25,13 @@ class SignupView(CreateView):
 
     def get_form(self, form_class=None):
         form=super(SignupView,self).get_form()
-        form.yields['username'].widget=forms.TextInput(attrs={'class':'form-control mb2',
+        form.fields['username'].widget=forms.TextInput(attrs={'class':'form-control mb2',
         'placeholder':'Nombre de usuario'})
-        form.yields['email'].widget=forms.EmailInput(attrs={'class':'form-control mb2',
+        form.fields['email'].widget=forms.EmailInput(attrs={'class':'form-control mb2',
         'placeholder':'Mail'})
-        form.yields['password1'].widget=forms.PasswordInput(attrs={'class':'form-control mb2',
+        form.fields['password1'].widget=forms.PasswordInput(attrs={'class':'form-control mb2',
         'placeholder':'Contraseña'})
-        form.yields['password2'].widget=forms.PasswordInput(attrs={'class':'form-control mb2',
+        form.fields['password2'].widget=forms.PasswordInput(attrs={'class':'form-control mb2',
         'placeholder':'Repite la contraseña'})
         return form
 class UserEditView(UpdateView):

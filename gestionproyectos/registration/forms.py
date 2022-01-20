@@ -1,14 +1,14 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from nucleo.models import usuario
+from nucleo.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class UserCreationFormEmail(UserCreationForm):
     email=forms.EmailField(required=True, help_text="Requerido")
 
     class Meta:
-        model=usuario
+        model=User
         fields=('username','password1','password2','email')
 
     def save(self,comit=True):
@@ -18,5 +18,5 @@ class UserCreationFormEmail(UserCreationForm):
         return user
 class EditUserProfileForm(UserChangeForm):
     class Meta:
-        model = usuario
+        model = User
         fields=['username','nombre', 'apellidos', 'fechaNacimiento', 'direccion']
