@@ -32,6 +32,7 @@ class SignupView(CreateView):
         'placeholder':'Contraseña'})
         form.fields['password2'].widget=forms.PasswordInput(attrs={'class':'form-control mb2',
         'placeholder':'Repite la contraseña'})
+
         return form
 class UserEditView(UpdateView):
     form_class = EditUserProfileForm
