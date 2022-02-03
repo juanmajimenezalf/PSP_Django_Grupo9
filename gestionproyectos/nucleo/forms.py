@@ -163,5 +163,5 @@ class categoriasForm(forms.ModelForm):
         
         Widgets={
             'nombre': forms.TextInput(attrs={'class':'form-control'}),
-            'foto': forms.FileInput(attrs={'class':'form-control'})
+            'foto': forms.FileInput()
         }

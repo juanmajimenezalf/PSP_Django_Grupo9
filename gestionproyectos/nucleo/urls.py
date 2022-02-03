@@ -47,4 +47,4 @@ urlpatterns = [
     path('categorias/update/<int:pk>', views.categoriaUpdate.as_view(), name="editarCategoria"),
     path('categorias/delete/<int:pk>', views.categoriaDelete.as_view(), name="borrarCategoria"),
     path('categorias', views.verCategorias, name="indexCategoria"),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,6 +6,25 @@
   {% endfor %}
 </ul>
 {%block contenido %}
+<nav class="navbar navbar-light bg-light">
+  <form class="container-fluid">
+    <div class="input-group">
+      <span class="input-group-text" id="basic-addon1">Filtros: </span>
+      <select class="form-select" aria-label="Default select example" name="category">
+        <option selected disabled>Categorías</option>
+        <option value="0">Ver todas</option>
+        {% comment %} {% for cat in categories %} 
+        <option value="{{ cat.pk }}">{{ cat.nombre }}</option>
+        {% endfor %}{% endcomment %}
+      </select>
+      <span class="input-group-text" id="basic-addon1">Fecha de Inicio: </span>
+      <input type="date" class="form-control" name="fechaIni">
+      <span class="input-group-text" id="basic-addon1">Fecha Final: </span>
+      <input type="date" class="form-control" name="fechaFin">
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+  </form>
+</nav>
 {% if request.user.is_empleado %}
 <caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a></caption>
 {% endif %}
@@ -32,11 +51,11 @@
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
       <td>
-        
+      {% if request.user.is_cliente %} 
       {% if participa.idCliente != request.user.id and participa.idProyecto != e.id %}
       
         <a class="btn btn-primary" href="{%url 'nucleo:crearParticipa' pk=e.id %}">Inscribirse</a>
-
+      {% endif %}
       {%endif%}
       {% if request.user.is_empleado %}
         <a class="btn btn-primary" href="{%url 'nucleo:editarProyecto' pk=e.id %}">Editar</a>

@@ -18,7 +18,7 @@
     {% for c in categorias %}
     <tr>
       <td>{{ c.nombre}}</td>
-      <td><img src="{{ c.foto.urls }}" width="60" height="60"></td>
+      <td><img src="{{c.foto.url}}" width="60" height="60"></td>
       <td>
         <a class="btn btn-primary" href="{%url 'nucleo:editarCategoria' pk=c.id %}">Editar</a>
         <a class="btn btn-danger" href="{%url 'nucleo:borrarCategoria' pk=c.id %}">Eliminar</a>

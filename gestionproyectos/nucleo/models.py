@@ -25,7 +25,7 @@ class User(AbstractUser):
 class Categorias(models.Model):
        
     nombre = models.CharField(max_length=150, null=True)
-    foto = models.ImageField(upload_to='images/', null=True)
+    foto = models.ImageField(upload_to='images/',verbose_name="foto", null=True)
     
     def __str__(self):
         return self.nombre
