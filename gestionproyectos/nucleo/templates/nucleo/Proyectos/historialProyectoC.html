@@ -1,0 +1,39 @@
+{% block titulo %} Historial Proyectos {% endblock %}
+
+{%block contenido %}
+{% if request.user.is_cliente %}
+{% if proyectos %}
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Titulo</th>
+        <th scope="col">Descripcion</th>
+        <th scope="col">nivel</th>
+        <th scope="col">Fecha Inicio</th>
+        <th scope="col">Fecha Fin</th>
+        <th scope="col">Informe</th>
+        <th scope="col">Categoria</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in proyectos %}
+      <tr>
+        <td>{{ p.titulo }}</td>
+        <td>{{ p.descripcion }}</td>
+        <td>{{ p.nivel}}</td>
+        <td>{{ p.fechainiciacion }}</td>
+        <td>{{ p.fechafin }}</td>
+        <td>{{ p.informeFinal }}</td>
+        <td><img src="{{ p.idcategoria.foto.url}}" width="60" height="60"></td>
+      </tr>
+     {% endfor %}
+    
+    </tbody>
+  {% else %}
+    <h1>No hay registros de proyectos</h1>
+</table>
+{% endif %}
+{% endif %}    
+
+{% endblock %}

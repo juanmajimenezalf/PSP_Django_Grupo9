@@ -27,6 +27,10 @@
 </nav>
 {% if request.user.is_empleado %}
 <caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a></caption>
+<caption><a class="btn btn-primary" href="{% url 'nucleo:historialE' %}">Historial</a></caption>
+{% endif %}
+{% if request.user.is_cliente %}
+<caption><a class="btn btn-primary" href="{% url 'nucleo:historialC' %}">Historial</a></caption>
 {% endif %}
 {% if proyectos %}
 <table class="table">
@@ -38,7 +42,7 @@
       <th scope="col">Fecha Inicio</th>
       <th scope="col">Fecha Fin</th>
       <th scope="col">Informe</th>
-      
+      <th scope="col">Categoria</th>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +54,7 @@
       <td>{{ e.fechainiciacion }}</td>
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
+      <td><img src="{{ p.idcategoria.foto.url}}" width="60" height="60"></td>
       <td>
       {% if request.user.is_cliente %} 
       {% if participa.idCliente != request.user.id and participa.idProyecto != e.id %}
