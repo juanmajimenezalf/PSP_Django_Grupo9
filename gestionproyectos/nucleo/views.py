@@ -277,3 +277,11 @@ class historialProyectosE(ListView):
         context['proyectos'] = Proyectos.objects.filter(idEmpleado_id=self.request.user, fechafin__lt = datetime.now())
         return context
 
+class historialProyectosC(ListView):
+    model = Proyectos
+    template_name = 'nucleo/Proyectos/historialProyectoC.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['proyectos'] = Proyectos.objects.filter(participa__idCliente_id = self.request.user, fechafin__lt = datetime.now())
+        return context

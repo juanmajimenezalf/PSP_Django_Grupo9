@@ -1,7 +1,7 @@
 {% block titulo %} Historial Proyectos {% endblock %}
 
 {%block contenido %}
-{% if request.user.is_empleado %}
+{% if request.user.is_cliente %}
 {% if proyectos %}
 <table class="table">
     <thead class="thead-dark">

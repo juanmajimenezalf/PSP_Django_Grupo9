@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from nucleo.views import proyectoCreate, proyectoUpdate, proyectoDelete, categoriaCreate, categoriaUpdate, categoriaDelete, historialProyectosE
+from nucleo.views import proyectoCreate, proyectoUpdate, proyectoDelete, categoriaCreate, categoriaUpdate, categoriaDelete, historialProyectosE, historialProyectosC
 from nucleo import views
 from nucleo.decorators import clienteTrue, empleadoTrue
 
@@ -49,4 +49,5 @@ urlpatterns = [
     path('categorias', views.verCategorias, name="indexCategoria"),
 
     path('proyectos/historialE', views.historialProyectosE.as_view(), name="historialE"),
+    path('proyectos/historialC', views.historialProyectosC.as_view(), name="historialC"),
 ]
