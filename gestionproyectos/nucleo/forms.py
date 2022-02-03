@@ -146,3 +146,22 @@ class proyectosForm(forms.ModelForm):
             'fechafin': forms.DateInput(attrs={'class':'form-control'}),
             'direccion': forms.TextInput(attrs={'class':'form-control'}),
         }
+
+class categoriasForm(forms.Form):
+    class Meta:
+        model=Categorias
+        
+        fields= [
+            'nombre',
+            'foto',            
+        ]
+        
+        labels={
+            'nombre': 'Nombre',
+            'foto': 'Foto',
+        }
+        
+        Widgets={
+            'nombre': forms.TextInput(attrs={'class':'form-control'}),
+            'foto': forms.TextInput(attrs={'class':'form-control'})
+        }
