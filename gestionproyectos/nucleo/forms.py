@@ -149,7 +149,7 @@ class proyectosForm(forms.ModelForm):
 
 class categoriasForm(forms.Form):
     class Meta:
-        model=categorias
+        model=Categorias
         
         fields= [
             'nombre',
