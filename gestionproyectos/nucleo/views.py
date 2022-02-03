@@ -305,7 +305,7 @@ class categoriaDelete(DeleteView):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
-@method_decorator(staff_member_required, name='dispatch')
+@staff_member_required
 def verCategorias(request):
     categorias=Categorias.objects.all()
     context={'categorias':categorias}
@@ -327,6 +327,25 @@ class historialProyectosC(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['proyectos'] = Proyectos.objects.filter(participa__idCliente_id = self.request.user, fechafin__lt = datetime.now())
+        return context
+    
+class proyectoSiguiente(ListView):
+    model = Proyectos
+    template_name = 'nucleo/Proyectos/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date = datetime.today()
+        week = date.strftime("%V")
+        week = int(week) + 1
+        # project = Project.objects.filter(initDateweek = week).order_by('-initDate')
+
+        proyecto = Proyectos.objects.filter(fechaInicioweek = week).order_by('-fechaInicio')
+
+        context['proyectos'] = proyecto
+        context['categorias'] = Categorias.objects.all()
+        print('AAAAAAAAAAA')
+        print(context['categorias'])
         return context
 
 class clienteProyecto(ListView):

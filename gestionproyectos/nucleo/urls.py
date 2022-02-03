@@ -40,6 +40,7 @@ urlpatterns = [
     
     path('proyectos/create', views.proyectoCreate.as_view(), name="crearProyecto"),
     path('proyectos/filter', views.ProyectoFilter.as_view(), name="filterProyecto"),
+    path('proyectos/filter/<int:pk>', views.proyectoSiguiente.as_view(), name="filterProyecto"),
     path('proyectos/update/<int:pk>', views.proyectoUpdate.as_view(), name="editarProyecto"),
     path('proyectos/delete/<int:pk>', views.proyectoDelete.as_view(), name="borrarProyecto"),
     
@@ -52,5 +53,5 @@ urlpatterns = [
 
     path('proyectos/historialE', views.historialProyectosE.as_view(), name="historialE"),
     path('proyectos/historialC', views.historialProyectosC.as_view(), name="historialC"),
-    path('proyectos/clienteProyecto', views.clienteProyecto.as_view(), name="clienteProyecto")
+
 ]
