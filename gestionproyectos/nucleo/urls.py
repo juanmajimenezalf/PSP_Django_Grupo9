@@ -44,7 +44,7 @@ urlpatterns = [
     path('Participa/create/<int:pk>', views.ParticipaCreate, name="crearParticipa"),
     
     path('categorias/create', views.categoriaCreate.as_view(), name="crearCategoria"),
-    path('categorias/update', views.categoriaUpdate.as_view(), name="editarCategoria"),
-    path('categorias/delete', views.categoriaDelete.as_view(), name="borrarCategoria"),
+    path('categorias/update/<int:pk>', views.categoriaUpdate.as_view(), name="editarCategoria"),
+    path('categorias/delete/<int:pk>', views.categoriaDelete.as_view(), name="borrarCategoria"),
     path('categorias', views.verCategorias, name="indexCategoria"),
 ]

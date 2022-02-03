@@ -14,6 +14,7 @@ from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm, cat
 from nucleo.models import User,Proyectos,Participa,Categorias
 from django.contrib import messages
 
+
 def home(request):
     cliente=User.objects.filter(is_cliente=True)
     empleado=User.objects.filter(is_empleado=True)
@@ -226,20 +227,22 @@ class categoriaCreate(CreateView):
     model = Categorias
     form_class= categoriasForm
     template_name = 'nucleo/Categorias/create.html'
-    success_url = reverse_lazy('Categoria:crearCategoria')
+    success_url = reverse_lazy('nucleo:indexCategoria')
+
 @method_decorator(staff_member_required, name='dispatch')
 class categoriaUpdate(UpdateView):
     model = Categorias
     form_class = categoriasForm
-    template_name = 'nucleo/Categorias/update.html'
-    success_url = reverse_lazy('Categoria:editarCategoria')
+    template_name = 'nucleo/Categorias/create.html'
+    success_url = reverse_lazy('nucleo:indexCategoria')
+
 @method_decorator(staff_member_required, name='dispatch')
 class categoriaDelete(DeleteView):
     model = Categorias
     template_name = 'nucleo/Categorias/delete.html'
-    success_url = reverse_lazy('Categorias:indexCategoria')
+    success_url = reverse_lazy('nucleo:indexCategoria')
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         self.object.delete()
         messages.success(request, 'Categoría eliminada con éxito')
         return HttpResponseRedirect(self.success_url)
