@@ -26,6 +26,9 @@
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
       
+      <td>
+        <a class="btn btn-primary" href="{%url 'nucleo:crearParticipa' pk=e.id %}">Inscribirse</a>
+      </td>
       
     
     {% endfor %}

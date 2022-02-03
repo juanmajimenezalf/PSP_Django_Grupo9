@@ -39,4 +39,6 @@ urlpatterns = [
     
     path('proyectos', views.verProyectos, name="indexProyectos"),
   
+
+    path('Participa/create/<int:pk>', views.ParticipaCreate, name="crearParticipa"),
 ]
