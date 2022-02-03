@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -12,7 +13,7 @@ class User(AbstractUser):
     direccion = models.CharField(max_length=150, null=True)
     biografia = models.CharField(max_length=255, null=True)
     fechaNacimiento = models.DateField(null=True)
-    fechaAlta = models.DateField(auto_now_add=True)
+    fechaAlta = models.DateField(datetime.today)
     activo = models.SmallIntegerField( null=True)
     is_cliente = models.BooleanField('cliente status', null=True)
     is_empleado = models.BooleanField('empleado status', null=True)
@@ -36,6 +37,7 @@ class proyectos(models.Model):
     nivel = models.IntegerField(null=True)
     fechainicion = models.DateField(null=True)
     fechafin = models.DateField(null=True)
+    informeFinal = models.CharField(max_length=150, null=True)
     idEmpleado = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     idCategoria = models.ForeignKey(categorias, on_delete=models.CASCADE,null=True)
     

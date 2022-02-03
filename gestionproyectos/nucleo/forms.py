@@ -16,7 +16,7 @@ class UserForm(forms.ModelForm):
             'password',
             'direccion',
             'biografia',
-            'is_empleado'
+            
         
         ]
         labels = {
@@ -26,7 +26,7 @@ class UserForm(forms.ModelForm):
             'username' : 'Nombre de usuario',
             'password' : 'Contraseña',
             'direccion': 'Direccion',
-            'is_empleado' : 'empleado'
+           
         }
         widgets = {
             'dni': forms.TextInput(attrs={'class':'form-control'}), 
@@ -35,7 +35,7 @@ class UserForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class':'form-control'}),
             'password': forms.PasswordInput(attrs={'class':'form-control'}),
             'direccion': forms.TextInput(attrs={'class':'form-control'}),
-            'is_empleado':forms.BooleanField(required=False, initial=True),
+            
             
         }
 class ClienteForm(forms.ModelForm):
@@ -62,8 +62,7 @@ class ClienteForm(forms.ModelForm):
             
             'direccion': 'Direccion',
             'fechaNacimiento': 'Fecha de Nacimiento',
-            'fechaAlta': 'Fecha de Alta',
-            'is_cliente':'cliente'
+            
             
             
         }
@@ -73,8 +72,7 @@ class ClienteForm(forms.ModelForm):
             'apellidos': forms.TextInput(attrs={'class':'form-control'}),
             'username': forms.TextInput(attrs={'class':'form-control'}),
             'fechaNacimiento': forms.DateInput(attrs={'class':'form-control'}),
-            'fechaAlta':forms.DateField(required=False, initial=datetime.today),
-            'is_cliente':forms.BooleanField(required=False, initial=True),
+            
             'direccion': forms.TextInput(attrs={'class':'form-control'}),
             
         }

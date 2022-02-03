@@ -1,0 +1,45 @@
+
+{% block titulo %} Empleados {% endblock %}
+
+{%block contenido %}
+
+
+  <caption><a class="btn btn-primary" href="{% url 'nucleo:crearEmpleado' %}">Añadir empleados</a></caption>
+   
+
+{% if empleado %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">DNI</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Direccion</th>
+      <th scope="col">Username</th>
+      <th scope="col">Biografia</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in empleado %}
+    <tr>
+      <td>{{ e.dni }}</td>
+      <td>{{ e.nombre }}</td>
+      <td>{{ e.apellidos}}</td>
+      <td>{{ e.direccion }}</td>
+      <td>{{ e.username }}</td>
+      <td>{{ e.biografia }}</td>
+      <td>
+        <a class="btn btn-primary" href="{%url 'nucleo:editarEmpleado' pk=e.id %}">Editar</a>
+        <a class="btn btn-danger" href="{%url 'nucleo:borrarEmpleado' pk=e.id %}">Eliminar</a>
+      </td>
+    </tr>
+    {% endfor %}
+
+    {% else %}
+    <h1>No hay registros de empleados</h1>
+
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}
