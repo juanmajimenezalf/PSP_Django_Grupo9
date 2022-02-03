@@ -25,11 +25,11 @@
       <td>{{ e.fechainiciacion }}</td>
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
-      
+      {% if participa.idCliente == request.user.id and participa.idProyecto == e.id %}
       <td>
         <a class="btn btn-primary" href="{%url 'nucleo:crearParticipa' pk=e.id %}">Inscribirse</a>
       </td>
-      
+      {%endif%}
     
     {% endfor %}
     

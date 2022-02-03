@@ -186,7 +186,8 @@ def verProyectos(request):
 @clienteTrue
 def ParticipaCreate(request,pk):
     proyectos = Proyectos.objects.filter(pk=pk).first()
-
+    user = User.objects.all()
+    participa = Participa.objects.all()
     if proyectos is not None:
         inscripcion = Participa()
         inscripcion.idCliente = request.user
@@ -194,5 +195,7 @@ def ParticipaCreate(request,pk):
         inscripcion.fechaInscripcion = datetime.today()
         inscripcion.save()
 
-    context={'proyectos':proyectos}
+    context={'proyectos':proyectos,
+             'user':user,
+             'participa': participa}
     return render(request, 'nucleo/Proyectos/index.html', context)
