@@ -5,11 +5,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
-from django.views.generic import CreateView, UpdateView,DeleteView
+from django.views.generic import CreateView, UpdateView,DeleteView, ListView
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from nucleo.decorators import clienteTrue, empleadoTrue, noAdmin
-import datetime
+from datetime import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm, categoriasForm
 from nucleo.models import User,Proyectos,Participa,Categorias
 from django.contrib import messages
@@ -267,3 +267,13 @@ def verCategorias(request):
     categorias=Categorias.objects.all()
     context={'categorias':categorias}
     return render(request, 'nucleo/Categorias/index.html', context) 
+
+class historialProyectosE(ListView):
+    model = Proyectos
+    template_name = 'nucleo/Proyectos/historialProyectoE.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['proyectos'] = Proyectos.objects.filter(idEmpleado_id=self.request.user, fechafin__lt = datetime.now())
+        return context
+

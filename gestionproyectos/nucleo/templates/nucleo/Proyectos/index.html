@@ -8,6 +8,7 @@
 {%block contenido %}
 {% if request.user.is_empleado %}
 <caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a></caption>
+<caption><a class="btn btn-primary" href="{% url 'nucleo:historialE' %}">Historial</a></caption>
 {% endif %}
 {% if proyectos %}
 <table class="table">
