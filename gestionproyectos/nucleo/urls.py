@@ -52,5 +52,5 @@ urlpatterns = [
 
     path('proyectos/historialE', views.historialProyectosE.as_view(), name="historialE"),
     path('proyectos/historialC', views.historialProyectosC.as_view(), name="historialC"),
-    path('proyectos/clienteProyecto', views.clienteProyecto.as_view(), name="clienteProyecto")
+    path('proyectos/clienteProyecto/<int:pk>', views.clienteProyecto.as_view(), name="clienteProyecto")
 ]
