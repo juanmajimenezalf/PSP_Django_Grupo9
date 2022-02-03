@@ -167,8 +167,9 @@ class proyectoCreate(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
+        
         form = self.form_class(request.POST)
-
+        
         if form.is_valid():
             proyecto = form.save(commit=False)
             proyecto.idEmpleado = User.objects.filter(pk=self.request.user.id).first()
@@ -204,14 +205,15 @@ def verProyectos(request):
 
 @clienteTrue
 def ParticipaCreate(request,pk):
-    proyectos = Proyectos.objects.filter(pk=pk).first()
-    user = User.objects.all()
+    proyectos=Proyectos.objects.all()
+    proyecto = Proyectos.objects.filter(pk=pk).first()
+    user = User.objects.filter(pk=request.user.id).first()
     participa = Participa.objects.all()
-    if proyectos is not None:
+    if proyecto is not None:
         inscripcion = Participa()
-        inscripcion.idCliente = request.user
-        inscripcion.idProyecto = proyectos
-        inscripcion.fechaInscripcion = datetime.today()
+        inscripcion.idCliente = user
+        inscripcion.idProyecto = proyecto
+        inscripcion.fechaInscripcion = datetime.date.today()
         inscripcion.save()
 
     context={'proyectos':proyectos,

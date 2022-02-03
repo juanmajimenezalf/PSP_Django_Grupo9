@@ -3,7 +3,7 @@
 
 {%block contenido %}
 {% if request.user.is_empleado %}
-<caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir empleados</a></caption>
+<caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a></caption>
 {% endif %}
 {% if proyectos %}
 <table class="table">
@@ -28,7 +28,8 @@
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
       <td>
-      {% if participa.idCliente == request.user.id and participa.idProyecto == e.id %}
+        
+      {% if participa.idCliente != request.user.id and participa.idProyecto != e.id %}
       
         <a class="btn btn-primary" href="{%url 'nucleo:crearParticipa' pk=e.id %}">Inscribirse</a>
 
