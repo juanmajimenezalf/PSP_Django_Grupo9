@@ -11,6 +11,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from nucleo.decorators import clienteTrue
 import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm
+
+
+from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm, categoriasForm
 from nucleo.models import User,proyectos,participa,categorias
 
 
@@ -173,3 +176,9 @@ def verProyectos(request):
     empleado=proyectos.objects.filter(is_empleado=True)
     context={'empleado':empleado}
     return render(request, 'nucleo/Proyectos/index.html',context)
+
+class categoriasCreate(CreateView):
+    model = categorias
+    form_class= categoriasForm
+    template_name = 'nucleo/categoria.html'
+    success_url = reverse_lazy('nucleo:home')
