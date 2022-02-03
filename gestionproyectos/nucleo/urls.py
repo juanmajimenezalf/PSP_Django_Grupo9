@@ -37,9 +37,10 @@ urlpatterns = [
     path('Clientes/delete/<int:pk>', views.ClienteDelete.as_view(), name="borrarCliente"),
     
     path('proyectos', views.verProyectos, name="indexProyectos"),
+    path('proyectos/create', views.proyectoCreate.as_view(), name="crearProyecto"),
+    path('proyectos/update/<int:pk>', views.proyectoUpdate.as_view(), name="editarProyecto"),
+    path('proyectos/delete/<int:pk>', views.proyectoDelete.as_view(), name="borrarProyecto"),
+    
     path('Participa/create/<int:pk>', views.ParticipaCreate, name="crearParticipa"),
-    path('proyectos/create', proyectoCreate.as_view(), name="crearProyecto"),
-    path('proyectos/update', proyectoUpdate.as_view(), name="editarProyecto"),
-    path('proyectos/delete', proyectoDelete.as_view(), name="borrarProyecto"),
     
 ]

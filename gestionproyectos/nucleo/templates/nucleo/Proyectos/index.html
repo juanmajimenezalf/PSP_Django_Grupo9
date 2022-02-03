@@ -2,7 +2,7 @@
 {% block titulo %} Proyectos {% endblock %}
 
 {%block contenido %}
-{% if request.user.is_emplpeado %}
+{% if request.user.is_empleado %}
 <caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir empleados</a></caption>
 {% endif %}
 {% if proyectos %}
@@ -27,17 +27,23 @@
       <td>{{ e.fechainiciacion }}</td>
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
+      <td>
       {% if participa.idCliente == request.user.id and participa.idProyecto == e.id %}
-      <td>
+      
         <a class="btn btn-primary" href="{%url 'nucleo:crearParticipa' pk=e.id %}">Inscribirse</a>
-      <td>
-        {% if request.user.is_emplpeado %}
+
+      {%endif%}
+      {% if request.user.is_empleado %}
         <a class="btn btn-primary" href="{%url 'nucleo:editarProyecto' pk=e.id %}">Editar</a>
         <a class="btn btn-danger" href="{%url 'nucleo:borrarProyecto' pk=e.id %}">Eliminar</a>
-        {% endif %}
+      {% endif %}
       </td>
-      {%endif%}
-    
+        
+      </td>
+      
+      </td>
+      
+    </tr>
     {% endfor %}
     
   </tbody>

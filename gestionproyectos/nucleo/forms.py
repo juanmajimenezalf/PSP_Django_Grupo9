@@ -124,7 +124,7 @@ class proyectosForm(forms.ModelForm):
             'fechainiciacion',
             'fechafin',
             'informeFinal',
-            'idEmpleado',
+            
             'idCategoria',
         ]
         labels = {
@@ -134,8 +134,8 @@ class proyectosForm(forms.ModelForm):
             'fechainiciacion' : 'fechainiciacion',
             'fechafin' : 'fechafin',
             'informeFinal':'informeFinal',
-            'idEmpleado': 'idEmpleado',
-            'idCategoria' : 'idCategoria'
+            
+            'idCategoria' : 'Categoría'
         }
         widgets = {
             'titulo': forms.TextInput(attrs={'class':'form-control'}), 

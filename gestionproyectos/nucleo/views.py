@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, UpdateView,DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
-from nucleo.decorators import clienteTrue
+from nucleo.decorators import clienteTrue, empleadoTrue, noAdmin
 import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm
 from nucleo.models import User,Proyectos,Participa,Categorias
@@ -158,11 +158,11 @@ class ClienteDelete(DeleteView):
     model = User
     template_name = "nucleo/Cliente/delete.html"
     success_url = reverse_lazy('nucleo:Clientes')
-    
+@method_decorator(empleadoTrue, name='dispatch')
 class proyectoCreate(CreateView):
     model = Proyectos
     form_class = proyectosForm
-    template_name = 'Proyectos/create.html'  
+    template_name = 'nucleo/Proyectos/create.html'  
     success_url = reverse_lazy('Proyecto:indexProyectos') 
 
     def post(self, request, *args, **kwargs):
@@ -171,29 +171,32 @@ class proyectoCreate(CreateView):
 
         if form.is_valid():
             proyecto = form.save(commit=False)
-            proyecto.empleado = User.objects.filter(pk=self.request.user.id).first()
+            proyecto.idEmpleado = User.objects.filter(pk=self.request.user.id).first()
             proyecto.save()
             messages.success(request, 'Proyecto registrado')
-            return HttpResponseRedirect(reverse('Proyecto:indexProyectos'))
+            return HttpResponseRedirect(reverse('nucleo:indexProyectos'))
         else:
             return self.render_to_response(self.get_context_data(form=form))
-    
+        
+@method_decorator(empleadoTrue, name='dispatch')
 class proyectoUpdate(UpdateView):
     model=Proyectos
     form_class = proyectosForm
-    template_name = 'Proyectos/update.html'
-    success_url = reverse_lazy('Proyecto:indexProyectos')
-    
+    template_name = 'nucleo/Proyectos/create.html'
+    success_url = reverse_lazy('nucleo:indexProyectos')
+@method_decorator(empleadoTrue, name='dispatch')
 class proyectoDelete(DeleteView):
     model= Proyectos
-    template_name = 'Proyectos/delete.html'
-    success_url = reverse_lazy('Proyecto:indexProyectos')
+    template_name = 'nucleo/Proyectos/delete.html'
+    success_url = reverse_lazy('nucleo:indexProyectos')
     
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return  super().dispatch(request, *args, **kwargs)
         
-@clienteTrue
+
+
+@noAdmin
 def verProyectos(request):
     proyectos=Proyectos.objects.all()
     context={'proyectos':proyectos}
