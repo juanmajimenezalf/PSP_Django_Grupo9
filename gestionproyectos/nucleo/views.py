@@ -1,12 +1,15 @@
 from datetime import datetime
+from enum import Flag
 from django import forms
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, UpdateView,DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
-
+from nucleo.decorators import clienteTrue
+import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm
 from nucleo.models import User,proyectos,participa,categorias
 
@@ -27,15 +30,26 @@ class empleadoCreate(CreateView):
     
     form_class = UserForm
     template_name = 'nucleo/Empleado/create.html'
-    success_url = reverse_lazy('nucleo:home')
+    success_url = reverse_lazy('nucleo:empleados')
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form=self.form_class(request.POST)
+        if form.is_valid():
+            empleado=form.save(commit=False)
+            empleado.is_empleado = True
+            empleado.is_active = False
+            empleado.save()
+        return render(request, 'nucleo/Empleado/index.html', {'form':form})
     
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 def crearEmpleado(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
             
             form.save()
-        return redirect('nucleo:home')
+        return redirect('nucleo:empleados')
     else:
         form = UserForm()
 
@@ -53,7 +67,7 @@ def editarEmpleado(request, id):
         form = EditUserForm(request.POST, instance=empleado)
         if form.is_valid():
             form.save()
-        return redirect('nucleo:home')
+        return redirect('nucleo:empleados')
     return render(request, 'nucleo/Empleado/create.html', {'form':form})
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -61,18 +75,23 @@ class EmpleadoUpdate (UpdateView):
     model = User
     form_class = EditUserForm
     template_name = 'nucleo/Empleado/create.html'
-    success_url = reverse_lazy('nucleo:home')
+    success_url = reverse_lazy('nucleo:empleados')
 
+def activateCliente(request, pk):
+    cliente = User.objects.get(id=pk)
+    cliente.is_active=True
+    cliente.save()
+    return redirect('nucleo:Clientes')
 def borrarEmpleado(request, id):
     empleado = User.objects.get(id=id)
     empleado.delete()
-    return redirect('nucleo:home')
+    return redirect('nucleo:empleados')
 
 @method_decorator(staff_member_required, name='dispatch')
 class EmpleadoDelete(DeleteView):
     model = User
     template_name = "nucleo/Empleado/delete.html"
-    success_url = reverse_lazy('nucleo:home')
+    success_url = reverse_lazy('nucleo:empleados')
     
 @method_decorator(staff_member_required, name='dispatch')
 class clienteCreate(CreateView):
@@ -80,19 +99,27 @@ class clienteCreate(CreateView):
     
     form_class = ClienteForm
     template_name = 'nucleo/Cliente/create.html'
-    success_url = reverse_lazy('nucleo:home')
+    success_url = reverse_lazy('nucleo:Clientes')
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form=self.form_class(request.POST)
+        if form.is_valid():
+            cliente=form.save(commit=False)
+            cliente.fechaAlta = datetime.date.today()
+            cliente.is_active=False
+            cliente.is_cliente = True
+            cliente.save()
+        return render(request, 'nucleo/Cliente/index.html', {'form':form})
     
-    
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
     
 def crearCliente(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
         if form.is_valid():
-            cliente = form.save(commit=False)
-            cliente
-            cliente.fechaAlta = datetime.today
-            cliente.save()   
-        return redirect('nucleo:home')
+            form.save()   
+        return redirect('nucleo:Clientes')
     else:
         
         form = ClienteForm()
@@ -112,7 +139,7 @@ def editarCliente(request, id):
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
-        return redirect('nucleo:home')
+        return redirect('nucleo:Clientes')
     return render(request, 'nucleo/Cliente/create.html', {'form':form})
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -120,18 +147,18 @@ class ClienteUpdate (UpdateView):
     model = User
     form_class = ClienteForm
     template_name = 'nucleo/Cliente/create.html'
-    success_url = reverse_lazy('nucleo:home')
+    success_url = reverse_lazy('nucleo:Clientes')
 
 def borrarCliente(request, id):
     cliente = User.objects.get(id=id)
     cliente.delete()
-    return redirect('nucleo:home')
+    return redirect('nucleo:Clientes')
 
 @method_decorator(staff_member_required, name='dispatch')
 class ClienteDelete(DeleteView):
     model = User
     template_name = "nucleo/Cliente/delete.html"
-    success_url = reverse_lazy('nucleo:home')
+    success_url = reverse_lazy('nucleo:Clientes')
     
     
     

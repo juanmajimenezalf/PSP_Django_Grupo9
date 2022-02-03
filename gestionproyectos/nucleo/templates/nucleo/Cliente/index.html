@@ -21,7 +21,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for e in empleado %}
+    {% for e in cliente %}
     <tr>
       <td>{{ e.dni }}</td>
       <td>{{ e.nombre }}</td>
@@ -31,6 +31,9 @@
       <td>{{ e.fechaNacimiento }}</td>
       <td>{{ e.fechaAlta }}</td>
       <td>
+        {% if e.is_active == False %}
+          <a class="btn btn-primary" href="{%url 'nucleo:activarCliente' pk=e.id %}">activar</a>
+        {% endif %}
         <a class="btn btn-primary" href="{%url 'nucleo:editarCliente' pk=e.id %}">Editar</a>
         <a class="btn btn-danger" href="{%url 'nucleo:borrarCliente' pk=e.id %}">Eliminar</a>
       </td>
