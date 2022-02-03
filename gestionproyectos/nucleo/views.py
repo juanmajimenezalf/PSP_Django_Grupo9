@@ -3,7 +3,7 @@ from enum import Flag
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, UpdateView,DeleteView
 from django.utils.decorators import method_decorator
@@ -12,7 +12,7 @@ from nucleo.decorators import clienteTrue
 import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm
 from nucleo.models import User,Proyectos,Participa,Categorias
-
+from django.contrib import messages
 
 def home(request):
     cliente=User.objects.filter(is_cliente=True)
@@ -96,7 +96,6 @@ class EmpleadoDelete(DeleteView):
 @method_decorator(staff_member_required, name='dispatch')
 class clienteCreate(CreateView):
     model = User
-    
     form_class = ClienteForm
     template_name = 'nucleo/Cliente/create.html'
     success_url = reverse_lazy('nucleo:Clientes')
@@ -106,7 +105,7 @@ class clienteCreate(CreateView):
         if form.is_valid():
             cliente=form.save(commit=False)
             cliente.fechaAlta = datetime.date.today()
-            cliente.is_active=False
+            cliente.is_active = False
             cliente.is_cliente = True
             cliente.save()
         return render(request, 'nucleo/Cliente/index.html', {'form':form})
@@ -165,6 +164,19 @@ class proyectoCreate(CreateView):
     form_class = proyectosForm
     template_name = 'Proyectos/create.html'  
     success_url = reverse_lazy('Proyecto:indexProyectos') 
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            proyecto = form.save(commit=False)
+            proyecto.empleado = User.objects.filter(pk=self.request.user.id).first()
+            proyecto.save()
+            messages.success(request, 'Proyecto registrado')
+            return HttpResponseRedirect(reverse('Proyecto:indexProyectos'))
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
     
 class proyectoUpdate(UpdateView):
     model=Proyectos
@@ -177,6 +189,10 @@ class proyectoDelete(DeleteView):
     template_name = 'Proyectos/delete.html'
     success_url = reverse_lazy('Proyecto:indexProyectos')
     
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return  super().dispatch(request, *args, **kwargs)
+        
 @clienteTrue
 def verProyectos(request):
     proyectos=Proyectos.objects.all()

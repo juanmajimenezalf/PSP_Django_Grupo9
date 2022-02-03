@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from nucleo.views import proyectoCreate, proyectoUpdate
+from nucleo.views import proyectoCreate, proyectoUpdate, proyectoDelete
 from nucleo import views
 from nucleo.decorators import clienteTrue, empleadoTrue
 
@@ -28,9 +28,7 @@ urlpatterns = [
     path('empleados', views.verEmpleados, name="indexEmpleado"),
     path('empleados/create', views.empleadoCreate.as_view(), name="crearEmpleado"),
     path('empleados/update/<int:pk>', views.EmpleadoUpdate.as_view(), name="editarEmpleado"),
-    path('empleados/delete/<int:pk>', views.EmpleadoDelete.as_view(), name="borrarEmpleado"),
-    path('proyectos', views.verProyectos, name="indexProyectos"),
-    
+    path('empleados/delete/<int:pk>', views.EmpleadoDelete.as_view(), name="borrarEmpleado"),    
     
     path('Clientes', views.verCliente, name="indexCliente"),
     path('Clientes/activate/<int:pk>', views.activateCliente, name="activarCliente"),
@@ -39,10 +37,9 @@ urlpatterns = [
     path('Clientes/delete/<int:pk>', views.ClienteDelete.as_view(), name="borrarCliente"),
     
     path('proyectos', views.verProyectos, name="indexProyectos"),
-  
-
     path('Participa/create/<int:pk>', views.ParticipaCreate, name="crearParticipa"),
-    path('proyectos/create', proyectoCreate.as_view(), name="crearProyecto")
-    # path('proyectos/update', proyectoUpdate.as_view(), name="modificarProyecto")
+    path('proyectos/create', proyectoCreate.as_view(), name="crearProyecto"),
+    path('proyectos/update', proyectoUpdate.as_view(), name="editarProyecto"),
+    path('proyectos/delete', proyectoDelete.as_view(), name="borrarProyecto"),
     
 ]
