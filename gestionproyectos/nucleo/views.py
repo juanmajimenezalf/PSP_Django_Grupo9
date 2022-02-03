@@ -211,13 +211,13 @@ def ParticipaCreate(request,pk):
     proyecto = Proyectos.objects.filter(pk=pk).first()
     user = User.objects.filter(pk=request.user.id).first()
     participa = Participa.objects.all()
-    if (AlredyIns == True or ):
+    if (AlredyIns == True ):
         context={'proyectos':proyectos,
                 'user':user,
                 'participa': participa}
         print('SI')
         
-        messages.success(request, 'Ya estás inscrito en esa oferta o su fecha ya')
+        messages.success(request, 'Ya estás inscrito en esa oferta')
         return render(request, 'nucleo/Proyectos/index.html', context)
     else:
         if proyecto is not None:
