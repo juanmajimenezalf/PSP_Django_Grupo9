@@ -37,7 +37,7 @@ class empleadoCreate(CreateView):
         if form.is_valid():
             empleado=form.save(commit=False)
             empleado.is_empleado = True
-            empleado.is_active = False
+            empleado.is_active = True
             empleado.save()
         return render(request, 'nucleo/Empleado/index.html', {'form':form})
     
