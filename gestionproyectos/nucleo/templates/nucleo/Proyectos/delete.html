@@ -1,0 +1,11 @@
+{% block titulo %} Empleados {% endblock %}
+
+{%block contenido %}
+
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Borrar proyecto">
+</form>
+
+
+{% endblock %}

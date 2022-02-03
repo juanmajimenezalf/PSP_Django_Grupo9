@@ -139,8 +139,8 @@ class proyectosForm(forms.ModelForm):
         }
         widgets = {
             'titulo': forms.TextInput(attrs={'class':'form-control'}), 
-            'informeFinal': forms.TextInput(attrs={'class':'form-control'}), 
-            'descripcion': forms.TextInput(attrs={'class':'form-control'}),
+            'informeFinal': forms.Textarea(attrs={'class':'form-control'}), 
+            'descripcion': forms.Textarea(attrs={'class':'form-control'}),
             'nivel': forms.NumberInput(attrs={'class':'form-control'}),
             'fechainicion': forms.DateInput(attrs={'class':'form-control'}),
             'fechafin': forms.DateInput(attrs={'class':'form-control'}),

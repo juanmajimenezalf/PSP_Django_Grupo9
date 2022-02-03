@@ -160,7 +160,22 @@ class ClienteDelete(DeleteView):
     template_name = "nucleo/Cliente/delete.html"
     success_url = reverse_lazy('nucleo:Clientes')
     
+class proyectoCreate(CreateView):
+    model = Proyectos
+    form_class = proyectosForm
+    template_name = 'Proyectos/create.html'  
+    success_url = reverse_lazy('Proyecto:indexProyectos') 
     
+class proyectoUpdate(UpdateView):
+    model=Proyectos
+    form_class = proyectosForm
+    template_name = 'Proyectos/update.html'
+    success_url = reverse_lazy('Proyecto:indexProyectos')
+    
+class proyectoDelete(DeleteView):
+    model= Proyectos
+    template_name = 'Proyectos/delete.html'
+    success_url = reverse_lazy('Proyecto:indexProyectos')
     
 @clienteTrue
 def verProyectos(request):
