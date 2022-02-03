@@ -78,11 +78,7 @@ class EmpleadoUpdate (UpdateView):
     template_name = 'nucleo/Empleado/create.html'
     success_url = reverse_lazy('nucleo:empleados')
 
-def activateCliente(request, pk):
-    cliente = User.objects.get(id=pk)
-    cliente.is_active=True
-    cliente.save()
-    return redirect('nucleo:Clientes')
+
 def borrarEmpleado(request, id):
     empleado = User.objects.get(id=id)
     empleado.delete()
@@ -130,6 +126,20 @@ def verCliente(request):
     cliente=User.objects.filter(is_cliente=True)
     context={'cliente':cliente}
     return render(request, 'nucleo/Cliente/index.html',context)
+
+@staff_member_required
+def activarCliente(request, pk):
+    cliente=User.objects.filter(is_cliente=True)
+    context={'cliente':cliente}
+    User.objects.filter(pk=pk).update(activo=1)
+    return render(request, 'nucleo/Cliente/index.html',context)
+
+@staff_member_required
+def desactivarCliente(request,pk):
+    cliente=User.objects.filter(is_cliente=True)
+    context={'cliente':cliente}
+    User.objects.filter(pk=pk).update(activo=0)
+    return render(request, 'nucleo/Cliente/index.html', context)
 
 def editarCliente(request, id):
     cliente = User.objects.get(id=id)
@@ -197,11 +207,43 @@ class proyectoDelete(DeleteView):
         return  super().dispatch(request, *args, **kwargs)
         
 
+class ProyectoFilter(ListView):
+    model = Proyectos
+    template_name = 'nucleo/Proyectos/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        idProj = []
+        inscripciones = Participa.objects.filter(idCliente=self.request.user.id)
+        for insc in inscripciones:
+            idProj.append(insc.idProyecto.pk)
+
+        categoria = self.request.GET.get('category', None)
+        fechaIni = self.request.GET.get('fechaIni',None)
+        fechaFin = self.request.GET.get('fechaFin',None)
+
+        if categoria is not None and fechaIni != '' and fechaFin != '':
+            projectos = Proyectos.objects.filter(idCategoria=categoria,fechafin=fechaFin).exclude(pk__in = idProj)
+        elif fechaIni is None and fechaFin is None:
+            projectos = Proyectos.objects.filter().exclude(pk__in = idProj)
+        elif fechaIni != '' and fechaFin != '':
+            projectos = Proyectos.objects.filter(fechafin=fechaFin).exclude(pk__in = idProj)
+        elif categoria is not None and categoria != '0':
+            projectos = Proyectos.objects.filter(idCategoria=categoria).exclude(pk__in = idProj)
+        else:
+            projectos = Proyectos.objects.filter().exclude(pk__in = idProj)
+
+        context['proyectos'] = projectos
+        context['categorias'] = Categorias.objects.all()
+        print('AAAAAAAAAAA')
+        print(context['categorias'])
+        return context
 @noAdmin
 def verProyectos(request):
     proyectos=Proyectos.objects.all()
     context={'proyectos':proyectos}
+    
     return render(request, 'nucleo/Proyectos/index.html', context)
 
 @clienteTrue
@@ -226,7 +268,7 @@ def ParticipaCreate(request,pk):
             inscripcion = Participa()
             inscripcion.idCliente = user
             inscripcion.idProyecto = proyecto
-            inscripcion.fechaInscripcion = datetime.date.today()
+            inscripcion.fechaInscripcion = datetime.today()
             inscripcion.save()
 
         context={'proyectos':proyectos,
@@ -284,4 +326,23 @@ class historialProyectosC(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['proyectos'] = Proyectos.objects.filter(participa__idCliente_id = self.request.user, fechafin__lt = datetime.now())
+        return context
+    
+class proyectoSiguiente(ListView):
+    model = Proyectos
+    template_name = 'nucleo/Proyectos/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date = datetime.today()
+        week = date.strftime("%V")
+        week = int(week) + 1
+        # project = Project.objects.filter(initDateweek = week).order_by('-initDate')
+
+        proyecto = Proyectos.objects.filter(fechaInicioweek = week).order_by('-fechaInicio')
+
+        context['proyectos'] = proyecto
+        context['categorias'] = Categorias.objects.all()
+        print('AAAAAAAAAAA')
+        print(context['categorias'])
         return context

@@ -1,0 +1,54 @@
+
+{% block titulo %} Empleados {% endblock %}
+
+{%block contenido %}
+
+
+  <caption><a class="btn btn-primary" href="{% url 'nucleo:crearCliente' %}">Añadir empleados</a></caption>
+   
+
+{% if cliente %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">DNI</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Direccion</th>
+      <th scope="col">Username</th>
+      <th scope="col">fecha de Nacimiento</th>
+      <th scope="col">fecha de Alta</th>
+      <th scope="col">Activo</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in cliente %}
+    <tr>
+      <td>{{ e.dni }}</td>
+      <td>{{ e.nombre }}</td>
+      <td>{{ e.apellidos}}</td>
+      <td>{{ e.direccion }}</td>
+      <td>{{ e.username }}</td>
+      <td>{{ e.fechaNacimiento }}</td>
+      <td>{{ e.fechaAlta }}</td>
+      <td>{{ e.activo }}</td>
+      <td>
+        <a class="btn btn-primary" href="{%url 'nucleo:editarCliente' pk=e.id %}">Editar</a>
+        <a class="btn btn-danger" href="{%url 'nucleo:borrarCliente' pk=e.id %}">Eliminar</a>
+        {% if not e.activo %}
+        <a class="btn btn-danger" href="{%url 'nucleo:activarCliente' pk=e.id %}">Activar</a>
+        {% else %}
+        <a class="btn btn-danger" href="{%url 'nucleo:desactivateCliente' pk=e.id %}">Desactivar</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+
+    {% else %}
+    <h1>No hay registros de Cliente</h1>
+
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}

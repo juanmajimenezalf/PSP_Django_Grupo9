@@ -31,13 +31,15 @@ urlpatterns = [
     path('empleados/delete/<int:pk>', views.EmpleadoDelete.as_view(), name="borrarEmpleado"),    
     
     path('Clientes', views.verCliente, name="indexCliente"),
-    path('Clientes/activate/<int:pk>', views.activateCliente, name="activarCliente"),
+    path('Clientes/activate/<int:pk>', views.activarCliente, name="activarCliente"),
+    path('Clientes/desactivate/<int:pk>', views.desactivarCliente, name="desactivateCliente"),
     path('Clientes/create', views.clienteCreate.as_view(), name="crearCliente"),
     path('Clientes/update/<int:pk>', views.ClienteUpdate.as_view(), name="editarCliente"),
     path('Clientes/delete/<int:pk>', views.ClienteDelete.as_view(), name="borrarCliente"),
     
-    path('proyectos', views.verProyectos, name="indexProyectos"),
+    
     path('proyectos/create', views.proyectoCreate.as_view(), name="crearProyecto"),
+    path('proyectos/filter', views.ProyectoFilter.as_view(), name="filterProyecto"),
     path('proyectos/update/<int:pk>', views.proyectoUpdate.as_view(), name="editarProyecto"),
     path('proyectos/delete/<int:pk>', views.proyectoDelete.as_view(), name="borrarProyecto"),
     

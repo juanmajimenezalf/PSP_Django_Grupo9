@@ -7,15 +7,15 @@
 </ul>
 {%block contenido %}
 <nav class="navbar navbar-light bg-light">
-  <form class="container-fluid">
+  <form class="container-fluid" action="{% url 'nucleo:filterProyecto'%}">
     <div class="input-group">
       <span class="input-group-text" id="basic-addon1">Filtros: </span>
       <select class="form-select" aria-label="Default select example" name="category">
         <option selected disabled>Categorías</option>
         <option value="0">Ver todas</option>
-        {% comment %} {% for cat in categories %} 
+        {% for cat in categorias %}
         <option value="{{ cat.pk }}">{{ cat.nombre }}</option>
-        {% endfor %}{% endcomment %}
+        {% endfor %}
       </select>
       <span class="input-group-text" id="basic-addon1">Fecha de Inicio: </span>
       <input type="date" class="form-control" name="fechaIni">
@@ -27,10 +27,6 @@
 </nav>
 {% if request.user.is_empleado %}
 <caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a></caption>
-<caption><a class="btn btn-primary" href="{% url 'nucleo:historialE' %}">Historial</a></caption>
-{% endif %}
-{% if request.user.is_cliente %}
-<caption><a class="btn btn-primary" href="{% url 'nucleo:historialC' %}">Historial</a></caption>
 {% endif %}
 {% if proyectos %}
 <table class="table">
@@ -42,7 +38,7 @@
       <th scope="col">Fecha Inicio</th>
       <th scope="col">Fecha Fin</th>
       <th scope="col">Informe</th>
-      <th scope="col">Categoria</th>
+      
     </tr>
   </thead>
   <tbody>
@@ -54,7 +50,6 @@
       <td>{{ e.fechainiciacion }}</td>
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
-      <td><img src="{{ p.idcategoria.foto.url}}" width="60" height="60"></td>
       <td>
       {% if request.user.is_cliente %} 
       {% if participa.idCliente != request.user.id and participa.idProyecto != e.id %}
