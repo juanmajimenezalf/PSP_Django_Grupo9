@@ -305,6 +305,7 @@ class categoriaDelete(DeleteView):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
+@method_decorator(staff_member_required, name='dispatch')
 def verCategorias(request):
     categorias=Categorias.objects.all()
     context={'categorias':categorias}
@@ -327,22 +328,16 @@ class historialProyectosC(ListView):
         context = super().get_context_data(**kwargs)
         context['proyectos'] = Proyectos.objects.filter(participa__idCliente_id = self.request.user, fechafin__lt = datetime.now())
         return context
-    
-class proyectoSiguiente(ListView):
-    model = Proyectos
-    template_name = 'nucleo/Proyectos/index.html'
+
+class clienteProyecto(ListView):
+    model = Participa
+    template_name = 'nucleo/Proyectos/misClientes.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        date = datetime.today()
-        week = date.strftime("%V")
-        week = int(week) + 1
-        # project = Project.objects.filter(initDateweek = week).order_by('-initDate')
-
-        proyecto = Proyectos.objects.filter(fechaInicioweek = week).order_by('-fechaInicio')
-
-        context['proyectos'] = proyecto
-        context['categorias'] = Categorias.objects.all()
-        print('AAAAAAAAAAA')
-        print(context['categorias'])
+        context['clientes'] = Participa.objects.filter(idProyecto_id=self.kwargs.get('pk'))
         return context
+
+    def post(self, request, *args, **kwargs):
+        Participa.objects.filter(idProyecto_id=self.kwargs.get('pk'),idCliente_id=self.request.POST.get('idCliente_id').update(rol=self.request.POST.get('rol')))
+        return HttpResponseRedirect(reverse('nucleo:clienteProyecto'),kwargs={'pk':self.kwargs.get('pk')})
