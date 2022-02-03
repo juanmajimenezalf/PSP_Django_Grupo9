@@ -331,7 +331,7 @@ class historialProyectosC(ListView):
 
 class clienteProyecto(ListView):
     model = Participa
-    template_name = 'nucleo/Proyectos/misClientes.html'
+    template_name = 'nucleo/Proyectos/clienteProyecto.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
