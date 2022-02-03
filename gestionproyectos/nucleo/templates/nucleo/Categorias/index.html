@@ -1,35 +1,27 @@
-{% block titulo %} Empleados {% endblock %}
+{% block titulo %} Categorias {% endblock %}
 
 {%block contenido %}
 
 
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:crearEmpleado' %}">Añadir empleados</a></caption>
+  <caption><a class="btn btn-primary" href="{% url 'nucleo:crearCategoria' %}">Crear Categoria</a></caption>
    
 
-{% if empleado %}
+{% if is_staff %}
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">DNI</th>
       <th scope="col">Nombre</th>
-      <th scope="col">Apellidos</th>
-      <th scope="col">Direccion</th>
-      <th scope="col">Username</th>
-      <th scope="col">Biografia</th>
+      <th scope="col">Foto</th>
     </tr>
   </thead>
   <tbody>
-    {% for e in empleado %}
+    {% for c in categorias %}
     <tr>
-      <td>{{ e.dni }}</td>
-      <td>{{ e.nombre }}</td>
-      <td>{{ e.apellidos}}</td>
-      <td>{{ e.direccion }}</td>
-      <td>{{ e.username }}</td>
-      <td>{{ e.biografia }}</td>
+      <td>{{ c.nombre}}</td>
+      <td><img src="{{ c.foto.url }}" width="60" height="60"></td>
       <td>
-        <a class="btn btn-primary" href="{%url 'nucleo:editarEmpleado' pk=e.id %}">Editar</a>
-        <a class="btn btn-danger" href="{%url 'nucleo:borrarEmpleado' pk=e.id %}">Eliminar</a>
+        <a class="btn btn-primary" href="{%url 'nucleo:editarCategoria' pk=c.id %}">Editar</a>
+        <a class="btn btn-danger" href="{%url 'nucleo:borrarCategoria' pk=c.id %}">Eliminar</a>
       </td>
     </tr>
     {% endfor %}
