@@ -1,0 +1,12 @@
+{% block titulo %} Asignar Rol {% endblock %}
+
+{%block contenido %}
+{% for c in clientes %}
+<h3>{{c.cliente.nombre}} {{c.cliente.apellidos}}</h3>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="rol" />
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endfor %}
+ {% endblock %}
