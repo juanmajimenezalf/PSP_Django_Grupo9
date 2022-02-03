@@ -1,4 +1,4 @@
-from datetime import datetime
+
 from enum import Flag
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,10 +11,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from nucleo.decorators import clienteTrue
 import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm
-
-
-from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm, categoriasForm
-from nucleo.models import User,proyectos,participa,categorias
+from nucleo.models import User,Proyectos,Participa,Categorias
 
 
 def home(request):
@@ -40,7 +37,7 @@ class empleadoCreate(CreateView):
         if form.is_valid():
             empleado=form.save(commit=False)
             empleado.is_empleado = True
-            empleado.is_active = True
+            empleado.is_active = False
             empleado.save()
         return render(request, 'nucleo/Empleado/index.html', {'form':form})
     
@@ -165,20 +162,8 @@ class ClienteDelete(DeleteView):
     
     
     
-@method_decorator(staff_member_required, name='dispatch')
-class proyectoCreate(CreateView):
-    model = proyectos
-    
-    form_class = proyectosForm
-    template_name = 'nucleo/Empleado/create.html'
-    success_url = reverse_lazy('nucleo:home')
-def verProyectos(request):
-    empleado=proyectos.objects.filter(is_empleado=True)
-    context={'empleado':empleado}
-    return render(request, 'nucleo/Proyectos/index.html',context)
 
-class categoriasCreate(CreateView):
-    model = categorias
-    form_class= categoriasForm
-    template_name = 'nucleo/categoria.html'
-    success_url = reverse_lazy('nucleo:home')
+def verProyectos(request):
+    proyectos=Proyectos.objects.all()
+    context={'proyectos':proyectos}
+    return render(request, 'nucleo/Proyectos/index.html', context)

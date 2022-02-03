@@ -1,0 +1,40 @@
+
+{% block titulo %} Proyectos {% endblock %}
+
+{%block contenido %}
+
+{% if proyectos %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Titulo</th>
+      <th scope="col">Descripcion</th>
+      <th scope="col">nivel</th>
+      <th scope="col">Fecha Inicio</th>
+      <th scope="col">Fecha Fin</th>
+      <th scope="col">Informe</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in proyectos %}
+    <tr>
+      <td>{{ e.Titulo }}</td>
+      <td>{{ e.descripcion }}</td>
+      <td>{{ e.nivel}}</td>
+      <td>{{ e.fechaIniciacion }}</td>
+      <td>{{ e.dechaFin }}</td>
+      <td>{{ e.informeFinal }}</td>
+      
+      
+    
+    {% endfor %}
+    
+  </tbody>
+  {% endif %}
+    <h1>No hay registros de proyectos</h1>
+
+    
+</table>
+
+{% endblock %}
