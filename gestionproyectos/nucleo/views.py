@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from nucleo.decorators import clienteTrue, empleadoTrue, noAdmin
 import datetime
-from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm
+from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm, categoriasForm
 from nucleo.models import User,Proyectos,Participa,Categorias
 from django.contrib import messages
 
@@ -218,3 +218,35 @@ def ParticipaCreate(request,pk):
              'user':user,
              'participa': participa}
     return render(request, 'nucleo/Proyectos/index.html', context)
+    
+
+class categoriaCreate(CreateView):
+    model = Categorias
+    form_class= categoriasForm
+    template_name = 'Categorias/create.html'
+    success_url = reverse_lazy('Categoria:crearCategoria')
+
+class categoriaUpdate(UpdateView):
+    model = Categorias
+    form_class = categoriasForm
+    template_name = 'Categorias/update.html'
+    success_url = reverse_lazy('Categoria:editarCategoria')
+
+class categoriaDelete(DeleteView):
+    model = Categorias
+    template_name = 'Categorias/delete.html'
+    success_url = reverse_lazy('Categorias:indexCategoria')
+
+    def post(self, request):
+        self.object.delete()
+        messages.success(request, 'Categoría eliminada con éxito')
+        return HttpResponseRedirect(self.success_url)
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+def verCategorias(request):
+    categorias=Categorias.objects.all()
+    context={'categorias':categorias}
+    return render(request, 'nucleo/Categorias/index.html', context)

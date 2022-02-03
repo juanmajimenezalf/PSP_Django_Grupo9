@@ -147,7 +147,7 @@ class proyectosForm(forms.ModelForm):
             'direccion': forms.TextInput(attrs={'class':'form-control'}),
         }
 
-class categoriasForm(forms.Form):
+class categoriasForm(forms.ModelForm):
     class Meta:
         model=Categorias
         
@@ -163,5 +163,5 @@ class categoriasForm(forms.Form):
         
         Widgets={
             'nombre': forms.TextInput(attrs={'class':'form-control'}),
-            'foto': forms.TextInput(attrs={'class':'form-control'})
+            'foto': forms.FileInput(attrs={'class':'form-control'})
         }
