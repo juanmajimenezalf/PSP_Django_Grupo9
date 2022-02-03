@@ -43,8 +43,8 @@ urlpatterns = [
     
     path('Participa/create/<int:pk>', views.ParticipaCreate, name="crearParticipa"),
     
-    path('categorias/create', categoriaCreate.as_view(), name="crearCategoria"),
-    path('categorias/update', categoriaUpdate.as_view(), name="editarCategoria"),
-    path('categorias/delete', categoriaDelete.as_view(), name="borrarCategoria"),
+    path('categorias/create', views.categoriaCreate.as_view(), name="crearCategoria"),
+    path('categorias/update', views.categoriaUpdate.as_view(), name="editarCategoria"),
+    path('categorias/delete', views.categoriaDelete.as_view(), name="borrarCategoria"),
     path('categorias', views.verCategorias, name="indexCategoria"),
 ]
