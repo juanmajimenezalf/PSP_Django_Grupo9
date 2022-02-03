@@ -205,21 +205,33 @@ def verProyectos(request):
 
 @clienteTrue
 def ParticipaCreate(request,pk):
+    AlredyIns = Participa.objects.filter(idProyecto_id=pk).filter(idCliente_id=request.user.id).exists()
+    print(AlredyIns)
     proyectos=Proyectos.objects.all()
     proyecto = Proyectos.objects.filter(pk=pk).first()
     user = User.objects.filter(pk=request.user.id).first()
     participa = Participa.objects.all()
-    if proyecto is not None:
-        inscripcion = Participa()
-        inscripcion.idCliente = user
-        inscripcion.idProyecto = proyecto
-        inscripcion.fechaInscripcion = datetime.date.today()
-        inscripcion.save()
+    if (AlredyIns == True or ):
+        context={'proyectos':proyectos,
+                'user':user,
+                'participa': participa}
+        print('SI')
+        
+        messages.success(request, 'Ya estás inscrito en esa oferta o su fecha ya')
+        return render(request, 'nucleo/Proyectos/index.html', context)
+    else:
+        if proyecto is not None:
+            print('NO')
+            inscripcion = Participa()
+            inscripcion.idCliente = user
+            inscripcion.idProyecto = proyecto
+            inscripcion.fechaInscripcion = datetime.date.today()
+            inscripcion.save()
 
-    context={'proyectos':proyectos,
-             'user':user,
-             'participa': participa}
-    return render(request, 'nucleo/Proyectos/index.html', context)
+        context={'proyectos':proyectos,
+                'user':user,
+                'participa': participa}
+        return render(request, 'nucleo/Proyectos/index.html', context)
     
 @method_decorator(staff_member_required, name='dispatch')
 class categoriaCreate(CreateView):
@@ -251,4 +263,4 @@ class categoriaDelete(DeleteView):
 def verCategorias(request):
     categorias=Categorias.objects.all()
     context={'categorias':categorias}
-    return render(request, 'nucleo/Categorias/index.html', context)
+    return render(request, 'nucleo/Categorias/index.html', context) 
