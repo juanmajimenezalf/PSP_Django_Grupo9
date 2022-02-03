@@ -221,22 +221,22 @@ def ParticipaCreate(request,pk):
              'participa': participa}
     return render(request, 'nucleo/Proyectos/index.html', context)
     
-
+@method_decorator(staff_member_required, name='dispatch')
 class categoriaCreate(CreateView):
     model = Categorias
     form_class= categoriasForm
-    template_name = 'Categorias/create.html'
+    template_name = 'nucleo/Categorias/create.html'
     success_url = reverse_lazy('Categoria:crearCategoria')
-
+@method_decorator(staff_member_required, name='dispatch')
 class categoriaUpdate(UpdateView):
     model = Categorias
     form_class = categoriasForm
-    template_name = 'Categorias/update.html'
+    template_name = 'nucleo/Categorias/update.html'
     success_url = reverse_lazy('Categoria:editarCategoria')
-
+@method_decorator(staff_member_required, name='dispatch')
 class categoriaDelete(DeleteView):
     model = Categorias
-    template_name = 'Categorias/delete.html'
+    template_name = 'nucleo/Categorias/delete.html'
     success_url = reverse_lazy('Categorias:indexCategoria')
 
     def post(self, request):
