@@ -19,11 +19,11 @@
   <tbody>
     {% for e in proyectos %}
     <tr>
-      <td>{{ e.Titulo }}</td>
+      <td>{{ e.titulo }}</td>
       <td>{{ e.descripcion }}</td>
       <td>{{ e.nivel}}</td>
-      <td>{{ e.fechaIniciacion }}</td>
-      <td>{{ e.dechaFin }}</td>
+      <td>{{ e.fechainiciacion }}</td>
+      <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
       
       
@@ -31,9 +31,9 @@
     {% endfor %}
     
   </tbody>
-  {% endif %}
+  {% else %}
     <h1>No hay registros de proyectos</h1>
-
+{% endif %}
     
 </table>
 

@@ -25,8 +25,9 @@
 
   <caption><a class="btn btn-primary" href="{% url 'nucleo:indexCliente' %}">Cliente</a></caption>
   <caption><a class="btn btn-primary" href="{% url 'nucleo:indexEmpleado' %}">Empleados</a></caption>
+  
+{% endif %}
+{% if request.user.is_cliente %}
   <caption><a class="btn btn-primary" href="{% url 'nucleo:indexProyectos' %}">Proyectos</a></caption>
 {% endif %}
-
-
 {% endblock %}

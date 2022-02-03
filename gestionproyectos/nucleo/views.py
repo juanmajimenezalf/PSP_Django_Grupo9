@@ -162,7 +162,7 @@ class ClienteDelete(DeleteView):
     
     
     
-
+@clienteTrue
 def verProyectos(request):
     proyectos=Proyectos.objects.all()
     context={'proyectos':proyectos}
