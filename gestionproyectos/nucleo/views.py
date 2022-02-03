@@ -1,4 +1,4 @@
-from datetime import datetime
+
 from enum import Flag
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,7 +11,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from nucleo.decorators import clienteTrue
 import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm
-from nucleo.models import User,proyectos,participa,categorias
+from nucleo.models import User,Proyectos,Participa,Categorias
 
 
 def home(request):
@@ -162,14 +162,8 @@ class ClienteDelete(DeleteView):
     
     
     
-@method_decorator(staff_member_required, name='dispatch')
-class proyectoCreate(CreateView):
-    model = proyectos
-    
-    form_class = proyectosForm
-    template_name = 'nucleo/Empleado/create.html'
-    success_url = reverse_lazy('nucleo:home')
+
 def verProyectos(request):
-    empleado=proyectos.objects.filter(is_empleado=True)
-    context={'empleado':empleado}
-    return render(request, 'nucleo/Proyectos/index.html',context)
+    proyectos=Proyectos.objects.all()
+    context={'proyectos':proyectos}
+    return render(request, 'nucleo/Proyectos/index.html', context)

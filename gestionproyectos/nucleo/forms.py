@@ -115,13 +115,13 @@ class EditUserForm(forms.ModelForm):
 class proyectosForm(forms.ModelForm):
     
     class Meta:
-        model = proyectos
+        model = Proyectos
 
         fields= [
             'titulo',
             'descripcion',
             'nivel',
-            'fechainicion',
+            'fechainiciacion',
             'fechafin',
             'informeFinal',
             'idEmpleado',
@@ -131,7 +131,7 @@ class proyectosForm(forms.ModelForm):
             'titulo': 'Titulo',
             'descripcion': 'descripcion',
             'nivel': 'nivel',
-            'fechainicion' : 'fechainicion',
+            'fechainiciacion' : 'fechainiciacion',
             'fechafin' : 'fechafin',
             'informeFinal':'informeFinal',
             'idEmpleado': 'idEmpleado',

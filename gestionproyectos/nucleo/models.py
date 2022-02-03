@@ -22,7 +22,7 @@ class User(AbstractUser):
         return self.username
 
     
-class categorias(models.Model):
+class Categorias(models.Model):
        
     nombre = models.CharField(max_length=150, null=True)
     foto = models.CharField(max_length=255, null=True)
@@ -30,25 +30,25 @@ class categorias(models.Model):
     def __str__(self):
         return self.nombre
         
-class proyectos(models.Model):
+class Proyectos(models.Model):
     
     titulo = models.CharField(max_length=150, null=True)
     descripcion = models.CharField(max_length=255, null=True)
     nivel = models.IntegerField(null=True)
-    fechainicion = models.DateField(null=True)
+    fechainiciacion = models.DateField(null=True)
     fechafin = models.DateField(null=True)
     informeFinal = models.CharField(max_length=150, null=True)
     idEmpleado = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    idCategoria = models.ForeignKey(categorias, on_delete=models.CASCADE,null=True)
+    idCategoria = models.ForeignKey(Categorias, on_delete=models.CASCADE,null=True)
     
     def __str__(self):
         return self.titulo
 
 
-class participa(models.Model):
+class Participa(models.Model):
     
     idCliente = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    idProyecto = models.ForeignKey(proyectos, on_delete=models.CASCADE,null=True)
+    idProyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE,null=True)
     fechaInscripcion = models.DateField(null=True)
     rol = models.CharField(max_length=100,null=True)
     
