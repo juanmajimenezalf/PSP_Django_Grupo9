@@ -133,3 +133,5 @@ LOGOUT_REDIRECT_URL = 'login'
 AUTH_USER_MODEL = 'nucleo.User'
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
+
+MEDIA_URL = '/media/'

@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from nucleo.views import proyectoCreate, proyectoUpdate, proyectoDelete
+from nucleo.views import proyectoCreate, proyectoUpdate, proyectoDelete, categoriaCreate, categoriaUpdate, categoriaDelete
 from nucleo import views
 from nucleo.decorators import clienteTrue, empleadoTrue
 
@@ -43,4 +43,8 @@ urlpatterns = [
     
     path('Participa/create/<int:pk>', views.ParticipaCreate, name="crearParticipa"),
     
+    path('categorias/create', categoriaCreate.as_view(), name="crearCategoria"),
+    path('categorias/update', categoriaUpdate.as_view(), name="editarCategoria"),
+    path('categorias/delete', categoriaDelete.as_view(), name="borrarCategoria"),
+    path('categorias', views.verCategorias, name="indexCategoria"),
 ]
