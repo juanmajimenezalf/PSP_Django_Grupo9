@@ -1,26 +1,9 @@
-{% extends 'nucleo/base.html' %}
+{% extends 'index.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<header class="p-3 mb-3 border-bottom bg-dark">
-  <div class="container">
-    <div class=" align-items-right ">
-      <div class="dropdown text-end">
-        <a href="#" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">  {{ user.username }}
-        </a>
-        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-          
-          <li><a class="dropdown-item" href="{% url 'viewProfile' %}">Profile</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-      </div>
-      
-    </div>
-  </div>
-</header>
+
 {% if request.user.is_staff %}
 
   <caption><a class="btn btn-primary" href="{% url 'nucleo:indexCliente' %}">Cliente</a></caption>
