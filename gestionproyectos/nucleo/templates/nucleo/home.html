@@ -6,11 +6,34 @@
 
 {% if request.user.is_staff %}
 
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:indexCliente' %}">Cliente</a></caption>
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:indexEmpleado' %}">Empleados</a></caption>
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:indexCategoria' %}">Categorias</a></caption>
+<div class="col d-flex justify-content-center">
+  <div class="card"><a class="btn btn-secondary" href="{% url 'nucleo:indexCliente' %}">Cliente</a>
+    <div class="container">
+      <br /><h5>Gestión de clientes</h5></div></div>
+</div>
+<br />
+<div class="col d-flex justify-content-center">
+  <div class="card"><a class="btn btn-secondary" href="{% url 'nucleo:indexEmpleado' %}">Empleados</a>
+    <div class="container">
+      <br /><h5>Gestión de empleados</h5></div>
+    </div>
+</div>
+</div>
+<br />
+<div class="col d-flex justify-content-center">
+  <div class="card"><a class="btn btn-secondary" href="{% url 'nucleo:indexCategoria' %}">Categorias</a>
+    <div class="container">
+      <br /><h5>Gestión de categorias</h5></div>
+    </div>
+</div>
+</div>
 {% endif %}
 {% if request.user.is_cliente or request.user.is_empleado%}
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:filterProyecto' %}">Proyectos</a></caption>
+<div class="col d-flex justify-content-center">
+  <div class="card"><a class="btn btn-secondary" href="{% url 'nucleo:filterProyecto' %}">Proyectos</a>
+    <div class="container">
+      <br /><h5>Gestión de proyectos de la empresa</h5></div>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

@@ -1,15 +1,18 @@
+{% extends 'index.html' %}
 
 {% block titulo %} Clientes {% endblock %}
 
-{%block contenido %}
-
-
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:crearCliente' %}">Añadir clientes</a></caption>
-   
+{%block content %}
+<h1>Clientes</h1>
+<br>
+</br>
+  <caption><a class="btn btn-secondary" href="{% url 'nucleo:crearCliente' %}">Añadir clientes</a></caption>
+  <br>
+</br>
 
 {% if cliente %}
 <table class="table">
-  <thead class="thead-dark">
+  <thead class="table-primary">
     <tr>
       <th scope="col">DNI</th>
       <th scope="col">Nombre</th>
@@ -19,9 +22,10 @@
       <th scope="col">fecha de Nacimiento</th>
       <th scope="col">fecha de Alta</th>
       <th scope="col">Activo</th>
+      <th scope="col">opciones</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-secondary">
     {% for e in cliente %}
     <tr>
       <td>{{ e.dni }}</td>
@@ -33,7 +37,7 @@
       <td>{{ e.fechaAlta }}</td>
       <td>{{ e.activo }}</td>
       <td>
-        <a class="btn btn-primary" href="{%url 'nucleo:editarCliente' pk=e.id %}">Editar</a>
+        <a class="btn btn-secondary" href="{%url 'nucleo:editarCliente' pk=e.id %}">Editar</a>
         <a class="btn btn-danger" href="{%url 'nucleo:borrarCliente' pk=e.id %}">Eliminar</a>
         {% if not e.activo %}
         <a class="btn btn-danger" href="{%url 'nucleo:activarCliente' pk=e.id %}">Activar</a>
@@ -51,4 +55,4 @@
   </tbody>
 </table>
 
-{% endblock %}
+{% endblock content%}

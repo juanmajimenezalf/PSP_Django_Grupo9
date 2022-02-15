@@ -1,6 +1,7 @@
+{% extends 'index.html' %}
 {% block titulo %} Empleados {% endblock %}
 
-{%block contenido %}
+{%block content %}
 
 <form method="post">
     {% csrf_token %}
@@ -8,4 +9,4 @@
 </form>
 
 
-{% endblock %}
+{% endblock content%}

@@ -1,12 +1,13 @@
+{% extends 'indexR.html' %}
 
 {% block titulo %} Login {% endblock %}
+{%block content %}
 
-{%block contenido %}
 
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-secondary">Guardar</button>
 </form>
-{% endblock %}
+{% endblock content%}
