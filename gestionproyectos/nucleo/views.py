@@ -2,7 +2,7 @@
 from enum import Flag
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, UpdateView,DeleteView, ListView
@@ -31,97 +31,67 @@ class empleadoCreate(CreateView):
     
     form_class = UserForm
     template_name = 'nucleo/Empleado/create.html'
-    success_url = reverse_lazy('nucleo:empleados')
+    success_url = reverse_lazy('nucleo:indexEmpleado')
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form=self.form_class(request.POST)
         if form.is_valid():
             empleado=form.save(commit=False)
+            empleado.fechaAlta = datetime.today()
             empleado.is_empleado = True
             empleado.is_active = False
             empleado.save()
-        return render(request, 'nucleo/Empleado/index.html', {'form':form})
+        return redirect('nucleo:indexEmpleado')
     
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
-def crearEmpleado(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            
-            form.save()
-        return redirect('nucleo:empleados')
-    else:
-        form = UserForm()
+@staff_member_required
+def borrarEmpleado(request, pk):
+    empleado = User.objects.get(id=pk)
+    empleado.delete()
+    empleados=User.objects.filter(is_empleado=True)
+    context={'empleado':empleados}
+    return render(request, 'nucleo/Empleado/index.html',context)
 
-    return render(request, 'nucleo/Empleado/create.html', {'form':form})
+@staff_member_required
 def verEmpleados(request):
     empleado=User.objects.filter(is_empleado=True)
     context={'empleado':empleado}
     return render(request, 'nucleo/Empleado/index.html',context)
 
-def editarEmpleado(request, id):
-    empleado = User.objects.get(id=id)
-    if request.method == 'GET':
-        form = EditUserForm(instance=empleado)
-    else:
-        form = EditUserForm(request.POST, instance=empleado)
-        if form.is_valid():
-            form.save()
-        return redirect('nucleo:empleados')
-    return render(request, 'nucleo/Empleado/create.html', {'form':form})
 
 @method_decorator(staff_member_required, name='dispatch')
 class EmpleadoUpdate (UpdateView):
     model = User
     form_class = EditUserForm
     template_name = 'nucleo/Empleado/create.html'
-    success_url = reverse_lazy('nucleo:empleados')
+    success_url = reverse_lazy('nucleo:indexEmpleado')
 
 
-def borrarEmpleado(request, id):
-    empleado = User.objects.get(id=id)
-    empleado.delete()
-    return redirect('nucleo:empleados')
 
-@method_decorator(staff_member_required, name='dispatch')
-class EmpleadoDelete(DeleteView):
-    model = User
-    template_name = "nucleo/Empleado/delete.html"
-    success_url = reverse_lazy('nucleo:empleados')
-    
+
 @method_decorator(staff_member_required, name='dispatch')
 class clienteCreate(CreateView):
     model = User
     form_class = ClienteForm
     template_name = 'nucleo/Cliente/create.html'
-    success_url = reverse_lazy('nucleo:Clientes')
+    success_url = reverse_lazy('nucleo:indexCliente')
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form=self.form_class(request.POST)
         if form.is_valid():
             cliente=form.save(commit=False)
-            cliente.fechaAlta = datetime.date.today()
-            cliente.is_active = False
+            cliente.fechaAlta = datetime.today()
+            cliente.activo = False
             cliente.is_cliente = True
             cliente.save()
-        return render(request, 'nucleo/Cliente/index.html', {'form':form})
+            
+        return redirect('nucleo:indexCliente')
     
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
-    
-def crearCliente(request):
-    if request.method == 'POST':
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            form.save()   
-        return redirect('nucleo:Clientes')
-    else:
-        
-        form = ClienteForm()
-        
 
-    return render(request, 'nucleo/Cliente/create.html', {'form':form})
+
 def verCliente(request):
     cliente=User.objects.filter(is_cliente=True)
     context={'cliente':cliente}
@@ -157,18 +127,15 @@ class ClienteUpdate (UpdateView):
     model = User
     form_class = ClienteForm
     template_name = 'nucleo/Cliente/create.html'
-    success_url = reverse_lazy('nucleo:Clientes')
-
-def borrarCliente(request, id):
-    cliente = User.objects.get(id=id)
+    success_url = reverse_lazy('nucleo:indexCliente')
+@staff_member_required
+def borrarCliente(request,pk):
+    cliente = User.objects.get(id=pk)
     cliente.delete()
-    return redirect('nucleo:Clientes')
-
-@method_decorator(staff_member_required, name='dispatch')
-class ClienteDelete(DeleteView):
-    model = User
-    template_name = "nucleo/Cliente/delete.html"
-    success_url = reverse_lazy('nucleo:Clientes')
+    clientes=User.objects.filter(is_cliente=True)
+    context={'cliente':clientes}
+    return render(request, 'nucleo/Cliente/index.html', context)
+    
 @method_decorator(empleadoTrue, name='dispatch')
 class proyectoCreate(CreateView):
     model = Proyectos
@@ -206,7 +173,7 @@ class proyectoDelete(DeleteView):
         self.object = self.get_object()
         return  super().dispatch(request, *args, **kwargs)
         
-
+@method_decorator(clienteTrue, name='dispatch')
 class ProyectoFilter(ListView):
     model = Proyectos
     template_name = 'nucleo/Proyectos/index.html'
@@ -216,9 +183,7 @@ class ProyectoFilter(ListView):
 
         idProj = []
         inscripciones = Participa.objects.filter(idCliente=self.request.user.id)
-        for insc in inscripciones:
-            idProj.append(insc.idProyecto.pk)
-
+        
         categoria = self.request.GET.get('category', None)
         fechaIni = self.request.GET.get('fechaIni',None)
         fechaFin = self.request.GET.get('fechaFin',None)
@@ -289,20 +254,19 @@ class categoriaUpdate(UpdateView):
     template_name = 'nucleo/Categorias/create.html'
     success_url = reverse_lazy('nucleo:indexCategoria')
 
-@method_decorator(staff_member_required, name='dispatch')
-class categoriaDelete(DeleteView):
-    model = Categorias
-    template_name = 'nucleo/Categorias/delete.html'
-    success_url = reverse_lazy('nucleo:indexCategoria')
-
-    def post(self, request, *args, **kwargs):
-        self.object.delete()
-        messages.success(request, 'Categoría eliminada con éxito')
-        return HttpResponseRedirect(self.success_url)
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
+def borrarfoto(request,pk):
+    categoria = get_object_or_404(Categorias, id=pk)
+    
+    categoria.foto.delete()
+    categoria.delete()
+    return redirect('nucleo:indexCategoria')
+@staff_member_required
+def borrarCategoria(request,pk):
+    categoria = get_object_or_404(Categorias, id=pk)
+    
+    categoria.foto.delete()
+    categoria.delete()
+    return redirect('nucleo:indexCategoria')
 
 @staff_member_required
 def verCategorias(request):

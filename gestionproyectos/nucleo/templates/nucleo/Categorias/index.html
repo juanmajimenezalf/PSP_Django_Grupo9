@@ -26,7 +26,7 @@
       <td><img src="{{c.foto.url}}" width="60" height="60"></td>
       <td>
         <a class="btn btn-secondary" href="{%url 'nucleo:editarCategoria' pk=c.id %}">Editar</a>
-        <a class="btn btn-danger" href="{%url 'nucleo:borrarCategoria' pk=c.id %}">Eliminar</a>
+        <a class="btn btn-danger" href="{%url 'nucleo:borrarCategoria' pk=c.id %}" onclick="return confirm('¿Está seguro que desea eliminar este cliente?')">Eliminar</a>
       </td>
     </tr>
     {% endfor %}

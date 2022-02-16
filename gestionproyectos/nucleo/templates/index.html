@@ -34,13 +34,13 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
                         {% if request.user.is_staff %}
-                        <img src="../images/users/ADMIN.jpg" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li>
+                        <img src="{%static 'users/ADMIN.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li>
                         {%endif%}
                         {% if  request.user.is_empleado %}
-                        <img src="../images/users/EMPLE.jpg" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li>
+                        <img src="{%static 'users/EMPLE.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li>
                         {% endif %}
                         {% if  request.user.is_cliente %}
-                        <img src="../images/users/CLIENTE.jpg" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li> 
+                        <img src="{%static 'users/CLIENTE.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li> 
                         {%endif%}
                         
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'viewProfile' %}">Profile</a></li>
