@@ -2189,14 +2189,14 @@ progress {
 
 .form-control {
   display: block;
-  width: 60%;
+  width: 50%;
   margin:auto;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
-  background-color: #fff;
+  background-color: rgb(255, 0, 0);
   background-clip: padding-box;
   border: 0.125rem solid #ced4da;
   -webkit-appearance: none;

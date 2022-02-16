@@ -39,7 +39,7 @@ class UserForm(forms.ModelForm):
             
         }
 class ClienteForm(forms.ModelForm):
-    
+    fechaNacimiento = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
     class Meta:
         model = User
 
@@ -71,7 +71,7 @@ class ClienteForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class':'form-control'}),
             'apellidos': forms.TextInput(attrs={'class':'form-control'}),
             'username': forms.TextInput(attrs={'class':'form-control'}),
-            'fechaNacimiento': forms.DateInput(attrs={'class':'form-control'}),
+            
             
             'direccion': forms.TextInput(attrs={'class':'form-control'}),
             
@@ -112,17 +112,19 @@ class EditUserForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class':'form-control'}),
         }
 class proyectosForm(forms.ModelForm):
-    
+    fechainiciacion = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    fechafin = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+                               
     class Meta:
         model = Proyectos
-
+        
         fields= [
             'titulo',
             'descripcion',
             'nivel',
             'fechainiciacion',
             'fechafin',
-            'informeFinal',
+           
             
             'idCategoria',
         ]
@@ -132,17 +134,12 @@ class proyectosForm(forms.ModelForm):
             'nivel': 'nivel',
             'fechainiciacion' : 'fechainiciacion',
             'fechafin' : 'fechafin',
-            'informeFinal':'informeFinal',
-            
             'idCategoria' : 'Categoría'
         }
         widgets = {
             'titulo': forms.TextInput(attrs={'class':'form-control'}), 
-            'informeFinal': forms.Textarea(attrs={'class':'form-control'}), 
             'descripcion': forms.Textarea(attrs={'class':'form-control'}),
             'nivel': forms.NumberInput(attrs={'class':'form-control'}),
-            'fechainicion': forms.DateInput(attrs={'class':'form-control'}),
-            'fechafin': forms.DateInput(attrs={'class':'form-control'}),
             'direccion': forms.TextInput(attrs={'class':'form-control'}),
         }
 

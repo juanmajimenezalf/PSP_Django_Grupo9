@@ -49,9 +49,7 @@ class empleadoCreate(CreateView):
 def borrarEmpleado(request, pk):
     empleado = User.objects.get(id=pk)
     empleado.delete()
-    empleados=User.objects.filter(is_empleado=True)
-    context={'empleado':empleados}
-    return render(request, 'nucleo/Empleado/index.html',context)
+    return redirect('nucleo:indexEmpleado')
 
 @staff_member_required
 def verEmpleados(request):
@@ -132,9 +130,7 @@ class ClienteUpdate (UpdateView):
 def borrarCliente(request,pk):
     cliente = User.objects.get(id=pk)
     cliente.delete()
-    clientes=User.objects.filter(is_cliente=True)
-    context={'cliente':clientes}
-    return render(request, 'nucleo/Cliente/index.html', context)
+    return redirect('nucleo:Clientes')
     
 @method_decorator(empleadoTrue, name='dispatch')
 class proyectoCreate(CreateView):
@@ -163,17 +159,15 @@ class proyectoUpdate(UpdateView):
     form_class = proyectosForm
     template_name = 'nucleo/Proyectos/create.html'
     success_url = reverse_lazy('nucleo:indexProyectos')
-@method_decorator(empleadoTrue, name='dispatch')
-class proyectoDelete(DeleteView):
-    model= Proyectos
-    template_name = 'nucleo/Proyectos/delete.html'
-    success_url = reverse_lazy('nucleo:indexProyectos')
-    
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return  super().dispatch(request, *args, **kwargs)
+
+
+@empleadoTrue
+def borrarProyecto(request,pk):
+    proyecto = Proyectos.objects.get(id=pk)
+    proyecto.delete()
+    return redirect('nucleo:indexProyectos')
         
-@method_decorator(clienteTrue, name='dispatch')
+@method_decorator(noAdmin, name='dispatch')
 class ProyectoFilter(ListView):
     model = Proyectos
     template_name = 'nucleo/Proyectos/index.html'
@@ -254,12 +248,7 @@ class categoriaUpdate(UpdateView):
     template_name = 'nucleo/Categorias/create.html'
     success_url = reverse_lazy('nucleo:indexCategoria')
 
-def borrarfoto(request,pk):
-    categoria = get_object_or_404(Categorias, id=pk)
-    
-    categoria.foto.delete()
-    categoria.delete()
-    return redirect('nucleo:indexCategoria')
+
 @staff_member_required
 def borrarCategoria(request,pk):
     categoria = get_object_or_404(Categorias, id=pk)

@@ -64,7 +64,7 @@
       {% if request.user.is_empleado %}
         <a class="btn btn-primary" href="{%url 'nucleo:clienteProyecto' pk=e.id %}">Ver Clientes</a>
         <a class="btn btn-primary" href="{%url 'nucleo:editarProyecto' pk=e.id %}">Editar</a>
-        <a class="btn btn-danger" href="{%url 'nucleo:borrarProyecto' pk=e.id %}">Eliminar</a>
+        <a class="btn btn-danger" onclick="return confirm('¿Está seguro que desea eliminar este proyecto?')" href="{%url 'nucleo:borrarProyecto' pk=e.id %}">Eliminar</a>
       {% endif %}
       </td>
         

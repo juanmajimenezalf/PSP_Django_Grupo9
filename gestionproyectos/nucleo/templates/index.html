@@ -44,7 +44,7 @@
                         {%endif%}
                         
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'viewProfile' %}">Profile</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'logout' %}">Logout</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" onclick="return confirm('¿Está seguro que desea hacer logout?')" href="{% url 'logout' %}">Logout</a></li>
                         
                     </ul>
                 </div>
