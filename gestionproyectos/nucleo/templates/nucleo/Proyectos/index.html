@@ -30,7 +30,9 @@
 {% if request.user.is_empleado %}
 <a class="btn btn-secondary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a>
 {% endif %}
-
+{%if AI%}
+<h3 class="text-secondary">Ya está inscrito en esa oferta</h3>
+{%endif%}
 {% if proyectos %}
 <table class="table">
   <thead class="table-primary">
@@ -41,6 +43,7 @@
       <th scope="col">Fecha Inicio</th>
       <th scope="col">Fecha Fin</th>
       <th scope="col">Informe</th>
+      
       <th scope="col">Opciones</th>
       
     </tr>
@@ -54,15 +57,17 @@
       <td>{{ e.fechainiciacion }}</td>
       <td>{{ e.fechafin }}</td>
       <td>{{ e.informeFinal }}</td>
+      
       <td>
       {% if request.user.is_cliente %} 
-      {% if participa.idCliente != request.user.id and participa.idProyecto != e.id %}
+      {% if participa.idCliente != request.user and participa.idProyecto != e %}
       
         <a class="btn btn-primary" href="{%url 'nucleo:crearParticipa' pk=e.id %}">Inscribirse</a>
       {% endif %}
       {%endif%}
-      {% if request.user.is_empleado %}
+       {% if e.idEmpleado == request.user %}
         <a class="btn btn-primary" href="{%url 'nucleo:clienteProyecto' pk=e.id %}">Ver Clientes</a>
+       
         <a class="btn btn-primary" href="{%url 'nucleo:editarProyecto' pk=e.id %}">Editar</a>
         <a class="btn btn-danger" onclick="return confirm('¿Está seguro que desea eliminar este proyecto?')" href="{%url 'nucleo:borrarProyecto' pk=e.id %}">Eliminar</a>
       {% endif %}
@@ -81,5 +86,10 @@
 {% endif %}
     
 </table>
+<script>
+  function myFunction() {
+    alert("Inscrito");
+  }
+</script>
 
 {% endblock content%}

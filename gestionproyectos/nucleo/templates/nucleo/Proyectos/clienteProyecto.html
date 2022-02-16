@@ -2,13 +2,36 @@
 
 {% block titulo %} Asignar Rol {% endblock %}
 
-{%block contenido %}
-{% for c in clientes %}
-<h3>{{c.idCliente.nombre}} {{c.idCliente.apellidos}}</h3>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="text" name="rol" />
-    <button type="submit" class="btn btn-secondary">Guardar</button>
-</form>
-{% endfor %}
- {% endblock %}
+{%block content %}
+{% if inscritos %}
+<table class="table">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">Usuario</th>
+      <th scope="col">Rol</th>
+     
+    </tr>
+  </thead>
+  <tbody class="table-secondary">
+    {% for e in inscritos %}
+    <tr>
+      <td>{{ e.idCliente }}</td>
+      <td><form id="streamform" action="{% url 'nucleo:asignarRol' pk=e.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="rol" value={{ e.rol }}>
+        <input type="hidden" name="proyectoid" value={{ proyecto.id }}>
+        <input type="submit" value="Asignar Rol" id="streambutton" />
+      </form>
+    </td>
+      
+    </tr>
+    {% endfor %}
+
+    {% else %}
+    <h1>No hay registros de Cliente</h1>
+
+    {% endif %}
+  </tbody>
+</table>
+
+ {% endblock content%}
