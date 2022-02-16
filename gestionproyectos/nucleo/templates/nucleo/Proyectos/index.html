@@ -1,12 +1,12 @@
-
+{% extends 'index.html' %}
 {% block titulo %} Proyectos {% endblock %}
 <ul class="messages">
   {% for message in messages %}
   <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
   {% endfor %}
 </ul>
-{%block contenido %}
-<nav class="navbar navbar-light bg-light">
+{%block content %}
+<nav class="navbar">
   <form class="container-fluid" action="{% url 'nucleo:filterProyecto'%}">
     <div class="input-group">
       <span class="input-group-text" id="basic-addon1">Filtros: </span>
@@ -21,16 +21,19 @@
       <input type="date" class="form-control" name="fechaIni">
       <span class="input-group-text" id="basic-addon1">Fecha Final: </span>
       <input type="date" class="form-control" name="fechaFin">
-      <button type="submit" class="btn btn-primary">Buscar</button>
+      <button type="submit" class="btn btn-secondary">Buscar</button>
     </div>
   </form>
 </nav>
+<br>
+</br>
 {% if request.user.is_empleado %}
-<caption><a class="btn btn-primary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a></caption>
+<a class="btn btn-secondary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a>
 {% endif %}
+
 {% if proyectos %}
 <table class="table">
-  <thead class="thead-dark">
+  <thead class="table-primary">
     <tr>
       <th scope="col">Titulo</th>
       <th scope="col">Descripcion</th>
@@ -38,10 +41,11 @@
       <th scope="col">Fecha Inicio</th>
       <th scope="col">Fecha Fin</th>
       <th scope="col">Informe</th>
+      <th scope="col">Opciones</th>
       
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-secondary">
     {% for e in proyectos %}
     <tr>
       <td>{{ e.titulo }}</td>
@@ -78,4 +82,4 @@
     
 </table>
 
-{% endblock %}
+{% endblock content%}

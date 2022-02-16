@@ -1,3 +1,5 @@
+{% extends 'index.html' %}
+
 {% block titulo %} Asignar Rol {% endblock %}
 
 {%block contenido %}
@@ -6,7 +8,7 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="text" name="rol" />
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-secondary">Guardar</button>
 </form>
 {% endfor %}
  {% endblock %}

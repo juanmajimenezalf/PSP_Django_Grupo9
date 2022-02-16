@@ -1,26 +1,31 @@
+{% extends 'index.html' %}
+<link rel="stylesheet" src="static.css">
 {% block titulo %} Categorias {% endblock %}
 
-{%block contenido %}
-
-
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:crearCategoria' %}">Crear Categoria</a></caption>
-   
-
+{%block content %}
+<h1>Categorías</h1>
+ 
+<br>
+</br>
+<caption><a class="btn btn-secondary" href="{% url 'nucleo:crearCategoria' %}">Crear Categoria</a></caption>
+<br>
+</br>
 {% if categorias %}
 <table class="table">
-  <thead class="thead-dark">
+  <thead class="table-primary">
     <tr>
       <th scope="col">Nombre</th>
       <th scope="col">Foto</th>
+      <th scope="col">Opciones</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-secondary">
     {% for c in categorias %}
     <tr>
       <td>{{ c.nombre}}</td>
       <td><img src="{{c.foto.url}}" width="60" height="60"></td>
       <td>
-        <a class="btn btn-primary" href="{%url 'nucleo:editarCategoria' pk=c.id %}">Editar</a>
+        <a class="btn btn-secondary" href="{%url 'nucleo:editarCategoria' pk=c.id %}">Editar</a>
         <a class="btn btn-danger" href="{%url 'nucleo:borrarCategoria' pk=c.id %}">Eliminar</a>
       </td>
     </tr>
@@ -33,4 +38,4 @@
   </tbody>
 </table>
 
-{% endblock %}
+{% endblock content%}

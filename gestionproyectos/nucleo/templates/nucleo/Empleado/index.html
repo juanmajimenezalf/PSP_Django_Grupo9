@@ -1,15 +1,18 @@
+{% extends 'index.html' %}
 
 {% block titulo %} Empleados {% endblock %}
 
-{%block contenido %}
-
-
-  <caption><a class="btn btn-primary" href="{% url 'nucleo:crearEmpleado' %}">Añadir empleados</a></caption>
+{%block content %}
+<h1>Empleados</h1>
+<br>
+</br>
+  <a class="btn btn-secondary" href="{% url 'nucleo:crearEmpleado' %}">Añadir empleados</a>
    
-
+  <br>
+</br>
 {% if empleado %}
 <table class="table">
-  <thead class="thead-dark">
+  <thead class="table-primary">
     <tr>
       <th scope="col">DNI</th>
       <th scope="col">Nombre</th>
@@ -17,9 +20,10 @@
       <th scope="col">Direccion</th>
       <th scope="col">Username</th>
       <th scope="col">Biografia</th>
+      <th scope="col">Opciones</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-secondary">
     {% for e in empleado %}
     <tr>
       <td>{{ e.dni }}</td>
@@ -29,7 +33,7 @@
       <td>{{ e.username }}</td>
       <td>{{ e.biografia }}</td>
       <td>
-        <a class="btn btn-primary" href="{%url 'nucleo:editarEmpleado' pk=e.id %}">Editar</a>
+        <a class="btn btn-secondary" href="{%url 'nucleo:editarEmpleado' pk=e.id %}">Editar</a>
         <a class="btn btn-danger" href="{%url 'nucleo:borrarEmpleado' pk=e.id %}">Eliminar</a>
       </td>
     </tr>
@@ -42,4 +46,4 @@
   </tbody>
 </table>
 
-{% endblock %}
+{% endblock content%}

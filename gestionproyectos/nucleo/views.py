@@ -236,8 +236,7 @@ class ProyectoFilter(ListView):
 
         context['proyectos'] = projectos
         context['categorias'] = Categorias.objects.all()
-        print('AAAAAAAAAAA')
-        print(context['categorias'])
+        
         return context
 @noAdmin
 def verProyectos(request):
@@ -249,7 +248,7 @@ def verProyectos(request):
 @clienteTrue
 def ParticipaCreate(request,pk):
     AlredyIns = Participa.objects.filter(idProyecto_id=pk).filter(idCliente_id=request.user.id).exists()
-    print(AlredyIns)
+    
     proyectos=Proyectos.objects.all()
     proyecto = Proyectos.objects.filter(pk=pk).first()
     user = User.objects.filter(pk=request.user.id).first()
@@ -258,13 +257,13 @@ def ParticipaCreate(request,pk):
         context={'proyectos':proyectos,
                 'user':user,
                 'participa': participa}
-        print('SI')
+       
         
         messages.success(request, 'Ya estás inscrito en esa oferta')
         return render(request, 'nucleo/Proyectos/index.html', context)
     else:
         if proyecto is not None:
-            print('NO')
+            
             inscripcion = Participa()
             inscripcion.idCliente = user
             inscripcion.idProyecto = proyecto
@@ -344,8 +343,7 @@ class proyectoSiguiente(ListView):
 
         context['proyectos'] = proyecto
         context['categorias'] = Categorias.objects.all()
-        print('AAAAAAAAAAA')
-        print(context['categorias'])
+        
         return context
 
 class clienteProyecto(ListView):

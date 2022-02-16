@@ -1,6 +1,7 @@
+{% extends 'index.html' %}
 {% block titulo %} Historial Proyectos {% endblock %}
 
-{%block contenido %}
+{%block content %}
 {% if request.user.is_empleado %}
 {% if proyectos %}
 <table class="table">
