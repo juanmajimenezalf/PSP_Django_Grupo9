@@ -34,7 +34,8 @@
       <td>{{ e.biografia }}</td>
       <td>
         <a class="btn btn-secondary" href="{%url 'nucleo:editarEmpleado' pk=e.id %}">Editar</a>
-        <a class="btn btn-danger" href="{%url 'nucleo:borrarEmpleado' pk=e.id %}">Eliminar</a>
+        <a class="btn btn-danger" onclick="return confirm('¿Está seguro que desea eliminar este cliente?')" href="{%url 'nucleo:borrarEmpleado' pk=e.id %}">Eliminar</a>
+        
       </td>
     </tr>
     {% endfor %}

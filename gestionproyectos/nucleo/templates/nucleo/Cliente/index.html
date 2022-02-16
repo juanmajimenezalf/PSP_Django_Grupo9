@@ -38,7 +38,8 @@
       <td>{{ e.activo }}</td>
       <td>
         <a class="btn btn-secondary" href="{%url 'nucleo:editarCliente' pk=e.id %}">Editar</a>
-        <a class="btn btn-danger" href="{%url 'nucleo:borrarCliente' pk=e.id %}">Eliminar</a>
+        <a class="btn btn-danger" onclick="return confirm('¿Está seguro que desea eliminar este cliente?')" href="{%url 'nucleo:borrarCliente' pk=e.id %}">Eliminar</a>
+        
         {% if not e.activo %}
         <a class="btn btn-danger" href="{%url 'nucleo:activarCliente' pk=e.id %}">Activar</a>
         {% else %}

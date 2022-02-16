@@ -21,7 +21,7 @@ def same_user(func):
         pk = kwargs['pk']
         user = User.objects.get(pk=pk)
 
-        if not request.user.is_superuser:
+        if not request.user.is_staff:
             if not (user.id == request.user.id):
                 
                 if request.user.is_cliente == True:

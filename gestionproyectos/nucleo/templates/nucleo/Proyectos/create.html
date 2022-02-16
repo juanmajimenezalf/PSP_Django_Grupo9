@@ -2,7 +2,7 @@
 {% block titulo %} Crear Proyecto {% endblock %}
 
 {%block content %}
-
+<h1 class="text-secondary">Añadir Proyecto</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}

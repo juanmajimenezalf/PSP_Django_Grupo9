@@ -106,7 +106,6 @@ class EditUserForm(forms.ModelForm):
         widgets = {
             'dni': forms.TextInput(attrs={'class':'form-control'}), 
             'nombre': forms.TextInput(attrs={'class':'form-control'}),
-            
             'username': forms.TextInput(attrs={'class':'form-control'}),
             'password': forms.PasswordInput(attrs={'class':'form-control'}),
             'direccion': forms.TextInput(attrs={'class':'form-control'}),
