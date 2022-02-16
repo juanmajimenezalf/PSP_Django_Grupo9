@@ -248,7 +248,7 @@ class categoriaCreate(CreateView):
     success_url = reverse_lazy('nucleo:indexCategoria')
 
 @method_decorator(staff_member_required, name='dispatch')
-class categoriaUpdate(UpdateView):
+class categoriaUpdate(UpdateView): 
     model = Categorias
     form_class = categoriasForm
     template_name = 'nucleo/Categorias/create.html'
