@@ -3,54 +3,53 @@
 {% block titulo %} Clientes {% endblock %}
 
 {%block content %}
+<nav class="navbar">
+  <form class="container-fluid" action="{% url 'nucleo:indexRolCliente'%}">
+    <div class="input-group">
+      <span class="input-group-text">Filtro: </span>
+      <select class="form-select" aria-label="Default select example" name="rol">
+        <option selected disabled>Roles</option>
+        <option value="0">Ver todos</option>
+        {% for r in roles %}
+        <option value="{{ r }}">{{ r }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-secondary">Buscar</button>
+    </div>
+  </form>
+</nav>
+
 <h1>Clientes</h1>
 <br>
-</br>
-  <caption><a class="btn btn-secondary" href="{% url 'nucleo:crearCliente' %}">Añadir clientes</a></caption>
-  <br>
-</br>
 
-{% if cliente %}
+
+{% if Data %}
+
 <table class="table">
   <thead class="table-primary">
     <tr>
-      <th scope="col">DNI</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Apellidos</th>
-      <th scope="col">Direccion</th>
-      <th scope="col">Username</th>
-      <th scope="col">fecha de Nacimiento</th>
-      <th scope="col">fecha de Alta</th>
-      <th scope="col">Activo</th>
-      <th scope="col">opciones</th>
+      <th scope="col">Nombre y Apellidos</th>
+      <th scope="col">Proyecto</th>
+      <th scope="col">Fecha incio</th>
+      <th scope="col">Fecha fin</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Rol</th>
     </tr>
   </thead>
   <tbody class="table-secondary">
-    {% for e in cliente %}
+    {% for e in Data %}
     <tr>
-      <td>{{ e.dni }}</td>
-      <td>{{ e.nombre }}</td>
-      <td>{{ e.apellidos}}</td>
-      <td>{{ e.direccion }}</td>
-      <td>{{ e.username }}</td>
-      <td>{{ e.fechaNacimiento }}</td>
-      <td>{{ e.fechaAlta }}</td>
-      <td>{{ e.activo }}</td>
-      <td>
-        <a class="btn btn-secondary" href="{%url 'nucleo:editarCliente' pk=e.id %}">Editar</a>
-        <a class="btn btn-danger" onclick="return confirm('¿Está seguro que desea eliminar este cliente?')" href="{%url 'nucleo:borrarCliente' pk=e.id %}">Eliminar</a>
-        
-        {% if not e.activo %}
-        <a class="btn btn-danger" href="{%url 'nucleo:activarCliente' pk=e.id %}">Activar</a>
-        {% else %}
-        <a class="btn btn-danger" href="{%url 'nucleo:desactivateCliente' pk=e.id %}">Desactivar</a>
-        {% endif %}
-      </td>
+      <td>{{ e.idCliente.nombre }} {{ e.idCliente.apellidos }}</td>
+      <td>{{ e.idProyecto}}</td>
+      <td>{{ e.idProyecto.fechainiciacion}}</td>
+      <td>{{ e.idProyecto.fechafin}}</td>
+      <td>{{ e.idProyecto.idCategoria.nombre}}</td>
+      <td>{{ e.rol}}</td>
+
     </tr>
     {% endfor %}
-
     {% else %}
-    <h1>No hay registros de Cliente</h1>
+    <h1>No hay registros de clientes con ese rol</h1>
 
     {% endif %}
   </tbody>

@@ -1,4 +1,5 @@
 
+from asyncio.windows_events import NULL
 from enum import Flag
 from re import I
 import string
@@ -188,15 +189,15 @@ class ProyectoFilter(ListView):
         fechaFin = self.request.GET.get('fechaFin',None)
 
         if categoria is not None and fechaIni != '' and fechaFin != '':
-            projectos = Proyectos.objects.filter(idCategoria=categoria,fechafin=fechaFin).exclude(pk__in = idProj)
+            projectos = Proyectos.objects.filter(idCategoria=categoria,fechafin=fechaFin, idEmpleado=self.request.user.id).exclude(pk__in = idProj)
         elif fechaIni is None and fechaFin is None:
-            projectos = Proyectos.objects.filter().exclude(pk__in = idProj)
+            projectos = Proyectos.objects.filter(idEmpleado=self.request.user.id).exclude(pk__in = idProj)
         elif fechaIni != '' and fechaFin != '':
-            projectos = Proyectos.objects.filter(fechafin=fechaFin).exclude(pk__in = idProj)
+            projectos = Proyectos.objects.filter(fechafin=fechaFin,idEmpleado=self.request.user.id).exclude(pk__in = idProj)
         elif categoria is not None and categoria != '0':
-            projectos = Proyectos.objects.filter(idCategoria=categoria).exclude(pk__in = idProj)
+            projectos = Proyectos.objects.filter(idCategoria=categoria,idEmpleado=self.request.user.id).exclude(pk__in = idProj)
         else:
-            projectos = Proyectos.objects.filter().exclude(pk__in = idProj)
+            projectos = Proyectos.objects.filter(idEmpleado=self.request.user.id).exclude(pk__in = idProj)
 
         context['proyectos'] = projectos
         context['categorias'] = Categorias.objects.all()
@@ -204,7 +205,7 @@ class ProyectoFilter(ListView):
         return context
 @noAdmin
 def verProyectos(request):
-    proyectos=Proyectos.objects.all()
+    proyectos=Proyectos.objects.filter(idEmpleado=request.user.id)
     context={'proyectos':proyectos}
     
     return render(request, 'nucleo/Proyectos/index.html', context)
@@ -322,14 +323,40 @@ def asignarRol(request,pk):
     ROLF=N.replace(" ","_")
     Participa.objects.filter(pk=pk).update(rol=ROLF)
     inscritos=Participa.objects.filter(idProyecto=NUM)
-    proyecto=Proyectos.objects.get(id=NUM)
+    proyecto=Proyectos.objects.get(id=NUM, idEmpleado=request.user.id)
     context={'inscritos':inscritos,
              'proyecto':proyecto}
     
     return render(request, 'nucleo/Proyectos/clienteProyecto.html', context)
     
 @empleadoTrue
-def indexRolCliente(request):
-    cliente=User.objects.filter(is_cliente=True)
-    context={'cliente':cliente}
-    return render(request, 'nucleo/Cliente/indexRol.html',context)
+def indexRol(request):
+    proyecto=Proyectos.objects.filter(idEmpleado=request.user.id)
+    Data=Participa.objects.filter(idProyecto__in=proyecto)
+    roles=Participa.objects.values_list('rol', flat=True).distinct()
+    context={'roles':roles,'Data':Data}
+    return render(request, 'nucleo/Cliente/indexRol.html', context) 
+
+@method_decorator(empleadoTrue, name='dispatch')
+class indexRolCliente(ListView):
+    model = Participa
+    template_name = 'nucleo/Cliente/indexRol.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        rolGet=self.request.GET.get('rol')
+        roles=Participa.objects.values_list('rol', flat=True).distinct()
+
+        if(self.request.GET.get('rol')!= '0'):
+            proyecto=Proyectos.objects.filter(idEmpleado=self.request.user.id)
+            Data=Participa.objects.filter(rol=rolGet,idProyecto__in=proyecto)
+        else:
+            proyecto=Proyectos.objects.filter(idEmpleado=self.request.user.id)
+            Data=Participa.objects.filter(idProyecto__in=proyecto)
+
+        context['roles'] = roles
+        context['Data'] = Data
+    
+        
+        return context

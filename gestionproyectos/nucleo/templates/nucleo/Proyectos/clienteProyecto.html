@@ -3,6 +3,7 @@
 {% block titulo %} Asignar Rol {% endblock %}
 
 {%block content %}
+
 {% if inscritos %}
 <table class="table">
   <thead class="table-primary">
@@ -20,7 +21,7 @@
         {% csrf_token %}
         <input type="text" name="rol" value={{ e.rol }}>
         <input type="hidden" name="proyectoid" value={{ proyecto.id }}>
-        <input type="submit" value="Asignar Rol" id="streambutton" />
+        <input class= "btn btn-secondary" type="submit" value="Asignar Rol" id="streambutton" />
       </form>
     </td>
       
