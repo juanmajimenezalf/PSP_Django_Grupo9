@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+
+{% block titulo %} Clientes {% endblock %}
+
+{%block content %}
+<h1>Clientes</h1>
+<br>
+</br>
+  <caption><a class="btn btn-secondary" href="{% url 'nucleo:crearCliente' %}">Añadir clientes</a></caption>
+  <br>
+</br>
+
+{% if cliente %}
+<table class="table">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">DNI</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Direccion</th>
+      <th scope="col">Username</th>
+      <th scope="col">fecha de Nacimiento</th>
+      <th scope="col">fecha de Alta</th>
+      <th scope="col">Activo</th>
+      <th scope="col">opciones</th>
+    </tr>
+  </thead>
+  <tbody class="table-secondary">
+    {% for e in cliente %}
+    <tr>
+      <td>{{ e.dni }}</td>
+      <td>{{ e.nombre }}</td>
+      <td>{{ e.apellidos}}</td>
+      <td>{{ e.direccion }}</td>
+      <td>{{ e.username }}</td>
+      <td>{{ e.fechaNacimiento }}</td>
+      <td>{{ e.fechaAlta }}</td>
+      <td>{{ e.activo }}</td>
+      <td>
+        <a class="btn btn-secondary" href="{%url 'nucleo:editarCliente' pk=e.id %}">Editar</a>
+        <a class="btn btn-danger" onclick="return confirm('¿Está seguro que desea eliminar este cliente?')" href="{%url 'nucleo:borrarCliente' pk=e.id %}">Eliminar</a>
+        
+        {% if not e.activo %}
+        <a class="btn btn-danger" href="{%url 'nucleo:activarCliente' pk=e.id %}">Activar</a>
+        {% else %}
+        <a class="btn btn-danger" href="{%url 'nucleo:desactivateCliente' pk=e.id %}">Desactivar</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+
+    {% else %}
+    <h1>No hay registros de Cliente</h1>
+
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock content%}

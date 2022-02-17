@@ -8,13 +8,13 @@
 
 <div class="col d-flex justify-content-center">
   <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexCliente' %}">Cliente</a>
-    <div class="container">
+    <div class="card-block">
       <br /><h5>Gestión de clientes</h5></div><br /></div>
 </div>
 <br />
 <div class="col d-flex justify-content-center">
   <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexEmpleado' %}">Empleados</a>
-    <div class="container">
+    <div class="card-block">
       <br /><h5>Gestión de empleados</h5></div><br />
     </div>
 </div>
@@ -22,7 +22,7 @@
 <br />
 <div class="col d-flex justify-content-center">
   <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexCategoria' %}">Categorias</a>
-    <div class="container">
+    <div class="card-block">
       <br /><h5>Gestión de categorias</h5></div><br />
     </div>
 </div>
@@ -31,8 +31,18 @@
 {% if request.user.is_cliente or request.user.is_empleado%}
 <div class="col d-flex justify-content-center">
   <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexProyectos' %}">Proyectos</a>
-    <div class="container">
+    <div class="card-block">
       <br /><h5>Gestión de proyectos de la empresa</h5></div><br />
+    </div>
+</div>
+</div>
+<br />
+{% endif %}
+{% if request.user.is_empleado%}
+<div class="col d-flex justify-content-center">
+  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexRolCliente' %}">Buscador</a>
+    <div class="card-block">
+      <br /><h5>Busqueda de clientes por roles desempeñados</h5></div><br />
     </div>
 </div>
 {% endif %}

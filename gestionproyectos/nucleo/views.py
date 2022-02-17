@@ -1,5 +1,8 @@
 
 from enum import Flag
+from re import I
+import string
+from tkinter import N
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -39,7 +42,8 @@ class empleadoCreate(CreateView):
             empleado=form.save(commit=False)
             empleado.fechaAlta = datetime.today()
             empleado.is_empleado = True
-            empleado.is_active = False
+            empleado.set_password(form.cleaned_data["password"])
+            empleado.is_active = True
             empleado.save()
         return redirect('nucleo:indexEmpleado')
     
@@ -82,6 +86,7 @@ class clienteCreate(CreateView):
             cliente.fechaAlta = datetime.today()
             cliente.activo = False
             cliente.is_cliente = True
+            cliente.set_password(form.cleaned_data["password"])
             cliente.save()
             
         return redirect('nucleo:indexCliente')
@@ -215,10 +220,11 @@ def ParticipaCreate(request,pk):
     if (AlredyIns == True ):
         context={'proyectos':proyectos,
                 'user':user,
-                'participa': participa}
+                'participa': participa,
+                'AI':AlredyIns}
        
         
-        messages.success(request, 'Ya estás inscrito en esa oferta')
+        
         return render(request, 'nucleo/Proyectos/index.html', context)
     else:
         if proyecto is not None:
@@ -298,16 +304,32 @@ class proyectoSiguiente(ListView):
         context['categorias'] = Categorias.objects.all()
         
         return context
+    
+@empleadoTrue
+def clienteProyecto(request,pk):
+    inscritos=Participa.objects.filter(idProyecto=pk)
+    proyecto=Proyectos.objects.get(id=pk)
+    context={'inscritos':inscritos,
+             'proyecto':proyecto}
+    
+    return render(request, 'nucleo/Proyectos/clienteProyecto.html', context)
 
-class clienteProyecto(ListView):
-    model = Participa
-    template_name = 'nucleo/Proyectos/clienteProyecto.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['clientes'] = Participa.objects.filter(idProyecto_id=self.kwargs.get('pk'))
-        return context
-
-    def post(self, request, *args, **kwargs):
-        Participa.objects.filter(idProyecto_id=self.kwargs.get('pk'),idCliente_id=self.request.POST.get('idCliente_id').update(rol=self.request.POST.get('rol')))
-        return HttpResponseRedirect(reverse('nucleo:clienteProyecto'),kwargs={'pk':self.kwargs.get('pk')})
+@empleadoTrue
+def asignarRol(request,pk):
+    N=request.POST.get('rol')
+    NUM=request.POST.get('proyectoid')
+    
+    ROLF=N.replace(" ","_")
+    Participa.objects.filter(pk=pk).update(rol=ROLF)
+    inscritos=Participa.objects.filter(idProyecto=NUM)
+    proyecto=Proyectos.objects.get(id=NUM)
+    context={'inscritos':inscritos,
+             'proyecto':proyecto}
+    
+    return render(request, 'nucleo/Proyectos/clienteProyecto.html', context)
+    
+@empleadoTrue
+def indexRolCliente(request):
+    cliente=User.objects.filter(is_cliente=True)
+    context={'cliente':cliente}
+    return render(request, 'nucleo/Cliente/indexRol.html',context)

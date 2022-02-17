@@ -52,5 +52,5 @@ class Participa(models.Model):
     fechaInscripcion = models.DateField(null=True)
     rol = models.CharField(max_length=100,null=True)
     
-    def __str__(self):
-        return self.fechaInscripcion
+    def __int__(self):
+        return self.id
