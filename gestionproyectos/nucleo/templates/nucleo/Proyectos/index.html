@@ -29,6 +29,10 @@
 </br>
 {% if request.user.is_empleado %}
 <a class="btn btn-secondary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a>
+<a class="btn btn-secondary" href="{% url 'nucleo:historialE' %}">Historial</a>
+{% endif %}
+{% if request.user.is_cliente %}
+<a class="btn btn-secondary" href="{% url 'nucleo:historialC' %}">Historial</a>
 {% endif %}
 {%if AI%}
 <h3 class="text-secondary">Ya está inscrito en esa oferta</h3>
