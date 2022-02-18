@@ -205,9 +205,11 @@ class ProyectoFilter(ListView):
         return context
 @noAdmin
 def verProyectos(request):
-    proyectos=Proyectos.objects.filter(idEmpleado=request.user.id)
+    if(request.user.is_empleado):
+        proyectos=Proyectos.objects.filter(idEmpleado=request.user.id)
+    else:
+        proyectos=Proyectos.objects.filter()
     context={'proyectos':proyectos}
-    
     return render(request, 'nucleo/Proyectos/index.html', context)
 
 @clienteTrue
@@ -234,6 +236,7 @@ def ParticipaCreate(request,pk):
             inscripcion.idCliente = user
             inscripcion.idProyecto = proyecto
             inscripcion.fechaInscripcion = datetime.today()
+            inscripcion.rol = 'Sin_rol'
             inscripcion.save()
 
         context={'proyectos':proyectos,
@@ -333,7 +336,7 @@ def asignarRol(request,pk):
 def indexRol(request):
     proyecto=Proyectos.objects.filter(idEmpleado=request.user.id)
     Data=Participa.objects.filter(idProyecto__in=proyecto)
-    roles=Participa.objects.values_list('rol', flat=True).distinct()
+    roles=Participa.objects.filter(idProyecto__in=proyecto).values_list('rol', flat=True).distinct()
     context={'roles':roles,'Data':Data}
     return render(request, 'nucleo/Cliente/indexRol.html', context) 
 
@@ -344,15 +347,15 @@ class indexRolCliente(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        proyecto=Proyectos.objects.filter(idEmpleado=self.request.user.id)
         rolGet=self.request.GET.get('rol')
-        roles=Participa.objects.values_list('rol', flat=True).distinct()
+        roles=Participa.objects.filter(idProyecto__in=proyecto).values_list('rol', flat=True).distinct()
 
         if(self.request.GET.get('rol')!= '0'):
-            proyecto=Proyectos.objects.filter(idEmpleado=self.request.user.id)
+            
             Data=Participa.objects.filter(rol=rolGet,idProyecto__in=proyecto)
         else:
-            proyecto=Proyectos.objects.filter(idEmpleado=self.request.user.id)
+            
             Data=Participa.objects.filter(idProyecto__in=proyecto)
 
         context['roles'] = roles
