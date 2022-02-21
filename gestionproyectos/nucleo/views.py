@@ -395,7 +395,7 @@ def pdfCliente(request):
     logo=os.path.join(os.getcwd(),'static/users/logo_salesianos.jpg')
     pdf.drawImage(logo, 25, 720, 120, 90,preserveAspectRatio=True)
     pdf.setFont("Helvetica-Bold", 21)
-    Pa=1
+    Pa=2
     pdf.drawString(230, 790, u"GESTIÓN OFERTAS")
     pdf.setFont("Helvetica-Bold", 17)
     
@@ -410,7 +410,7 @@ def pdfCliente(request):
     pdf.setFont("Helvetica-Bold", 15)
     pdf.drawString(40, 640, u"Entre las fechas: " + FI +" y " +FF)
     
-    pdf.drawString(540, 20, "0")
+    pdf.drawString(540, 20, "1")
     Y=500
     style = getSampleStyleSheet()['Normal']
     def P(txt):
