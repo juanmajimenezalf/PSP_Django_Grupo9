@@ -37,8 +37,9 @@ urlpatterns = [
     path('Clientes/update/<int:pk>', views.ClienteUpdate.as_view(), name="editarCliente"),
     path('Clientes/delete/<int:pk>', views.borrarCliente, name="borrarCliente"),
     path('Clientes/indexRol', views.indexRolCliente.as_view(), name="indexRolCliente"),
-     path('Clientes/indexR', views.indexRol, name="indexRol"),
-
+    path('Clientes/indexR', views.indexRol, name="indexRol"),
+    path('Clientes/pdfCliente', views.pdfCliente, name="pdfCliente"),
+    
     path('proyectos/index', views.verProyectos, name="indexProyectos"),
     path('proyectos/create', views.proyectoCreate.as_view(), name="crearProyecto"),
     path('proyectos/filter', views.ProyectoFilter.as_view(), name="filterProyecto"),
@@ -57,4 +58,6 @@ urlpatterns = [
     path('proyectos/historialC', views.historialProyectosC.as_view(), name="historialC"),
     path('proyectos/clienteProyecto/<int:pk>', views.clienteProyecto, name="clienteProyecto"),
     path('proyectos/asignarRol/<int:pk>', views.asignarRol, name="asignarRol")
+    
+    
 ]

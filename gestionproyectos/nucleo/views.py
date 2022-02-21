@@ -1,6 +1,8 @@
 
 from asyncio.windows_events import NULL
 from enum import Flag
+from fileinput import filename
+import os
 from re import I
 import string
 from tkinter import N
@@ -18,7 +20,12 @@ from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm, cat
 from nucleo.models import User,Proyectos,Participa,Categorias
 from django.contrib import messages
 
-
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 def home(request):
     cliente=User.objects.filter(is_cliente=True)
     empleado=User.objects.filter(is_empleado=True)
@@ -187,18 +194,28 @@ class ProyectoFilter(ListView):
         categoria = self.request.GET.get('category', None)
         fechaIni = self.request.GET.get('fechaIni',None)
         fechaFin = self.request.GET.get('fechaFin',None)
-
-        if categoria is not None and fechaIni != '' and fechaFin != '':
-            projectos = Proyectos.objects.filter(idCategoria=categoria,fechafin=fechaFin, idEmpleado=self.request.user.id).exclude(pk__in = idProj)
-        elif fechaIni is None and fechaFin is None:
-            projectos = Proyectos.objects.filter(idEmpleado=self.request.user.id).exclude(pk__in = idProj)
-        elif fechaIni != '' and fechaFin != '':
-            projectos = Proyectos.objects.filter(fechafin=fechaFin,idEmpleado=self.request.user.id).exclude(pk__in = idProj)
-        elif categoria is not None and categoria != '0':
-            projectos = Proyectos.objects.filter(idCategoria=categoria,idEmpleado=self.request.user.id).exclude(pk__in = idProj)
+        if(self.request.user.is_empleado):
+            if categoria is not None and fechaIni != '' and fechaFin != '':
+                projectos = Proyectos.objects.filter(idCategoria=categoria,fechafin=fechaFin, idEmpleado=self.request.user.id).exclude(pk__in = idProj)
+            elif fechaIni is None and fechaFin is None:
+                projectos = Proyectos.objects.filter(idEmpleado=self.request.user.id).exclude(pk__in = idProj)
+            elif fechaIni != '' and fechaFin != '':
+                projectos = Proyectos.objects.filter(fechafin=fechaFin,idEmpleado=self.request.user.id).exclude(pk__in = idProj)
+            elif categoria is not None and categoria != '0':
+                projectos = Proyectos.objects.filter(idCategoria=categoria,idEmpleado=self.request.user.id).exclude(pk__in = idProj)
+            else:
+                projectos = Proyectos.objects.filter(idEmpleado=self.request.user.id).exclude(pk__in = idProj)
         else:
-            projectos = Proyectos.objects.filter(idEmpleado=self.request.user.id).exclude(pk__in = idProj)
-
+            if categoria is not None and fechaIni != '' and fechaFin != '':
+                projectos = Proyectos.objects.filter(idCategoria=categoria,fechafin=fechaFin).exclude(pk__in = idProj)
+            elif fechaIni is None and fechaFin is None:
+                projectos = Proyectos.objects.filter().exclude(pk__in = idProj)
+            elif fechaIni != '' and fechaFin != '':
+                projectos = Proyectos.objects.filter(fechafin=fechaFin,).exclude(pk__in = idProj)
+            elif categoria is not None and categoria != '0':
+                projectos = Proyectos.objects.filter(idCategoria=categoria,).exclude(pk__in = idProj)
+            else:
+                projectos = Proyectos.objects.filter().exclude(pk__in = idProj)
         context['proyectos'] = projectos
         context['categorias'] = Categorias.objects.all()
         
@@ -209,9 +226,9 @@ def verProyectos(request):
         proyectos=Proyectos.objects.filter(idEmpleado=request.user.id)
     else:
         proyectos=Proyectos.objects.filter()
-    context={'proyectos':proyectos}
+    categorias = Categorias.objects.all()
+    context={'proyectos':proyectos, 'categorias':categorias}
     return render(request, 'nucleo/Proyectos/index.html', context)
-
 @clienteTrue
 def ParticipaCreate(request,pk):
     AlredyIns = Participa.objects.filter(idProyecto_id=pk).filter(idCliente_id=request.user.id).exists()
@@ -363,3 +380,32 @@ class indexRolCliente(ListView):
     
         
         return context
+    
+@clienteTrue
+def pdfCliente(request):
+    
+    response = HttpResponse(content_type='application/pdf')
+    buffer = io.BytesIO()
+    pdf = canvas.Canvas(buffer)
+    
+    logo=os.path.join(os.getcwd(),'static/users/logo_salesianos.png')
+    pdf.drawImage(logo, 40, 750, 120, 90,preserveAspectRatio=True)
+    pdf.setFont("Helvetica-Bold", 21)
+    pdf.drawString(230, 790, u"GESTIÓN OFERTAS")
+    pdf.setFont("Helvetica-Bold", 17)
+    pdf.drawString(200, 750, u"LISTA DE PROYECTOS EN LOS")
+    pdf.drawString(205, 730, u"QUE PARTICIPA EL USUARIO:")
+    FI = request.GET.get('FIPDF')
+    
+    pdf.setFont("Helvetica", 15)
+    
+    pdf.drawString(60,655, 'Fecha inicio:')
+    pdf.drawString(120,655, FI)
+   
+    pdf.showPage()
+    pdf.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    
+    return response

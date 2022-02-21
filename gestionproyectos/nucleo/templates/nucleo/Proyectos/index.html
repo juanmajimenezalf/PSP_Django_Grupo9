@@ -6,6 +6,8 @@
   {% endfor %}
 </ul>
 {%block content %}
+<h1 class="text-secondary">Proyectos</h1>
+<br />
 <nav class="navbar">
   <form class="container-fluid" action="{% url 'nucleo:filterProyecto'%}">
     <div class="input-group">
@@ -23,7 +25,9 @@
       <input type="date" class="form-control" name="fechaFin">
       <button type="submit" class="btn btn-secondary">Buscar</button>
     </div>
+    
   </form>
+  
 </nav>
 <br>
 </br>
@@ -90,6 +94,23 @@
 {% endif %}
     
 </table>
+<h4 class="text-secondary">Introduzca las fechas entre las que quiere filtrar en los proyectos en los que participa</h4>
+{% if request.user.is_cliente %}
+<form class="form-check-inline" action="{% url 'nucleo:pdfCliente'%}">
+  <div class="input-group">
+    <span class="input-group-text" id="basic-addon1">Fechas: </span>
+    <span class="input-group-text" id="basic-addon1">Fecha de Inicio: </span>
+    <input type="date" class="form-control" name="FIPDF">
+    <span class="input-group-text" id="basic-addon1">Fecha Final: </span>
+    <input type="date" class="form-control" name="FFPDF">
+  </div>
+  
+  <button type="submit" class="btn btn-secondary">Generar PDF</button>
+
+</form>
+
+
+{% endif %}
 <script>
   function myFunction() {
     alert("Inscrito");
