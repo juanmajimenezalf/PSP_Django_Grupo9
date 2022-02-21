@@ -21,11 +21,12 @@ from nucleo.models import User,Proyectos,Participa,Categorias
 from django.contrib import messages
 
 import io
-from django.http import FileResponse
+from reportlab.lib import colors
 from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
+from reportlab.lib.units import inch,cm
+from reportlab.platypus import SimpleDocTemplate, Image
+from reportlab.platypus.tables import Table, TableStyle
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 def home(request):
     cliente=User.objects.filter(is_cliente=True)
     empleado=User.objects.filter(is_empleado=True)
@@ -386,22 +387,53 @@ def pdfCliente(request):
     
     response = HttpResponse(content_type='application/pdf')
     buffer = io.BytesIO()
+   
     pdf = canvas.Canvas(buffer)
-    
-    logo=os.path.join(os.getcwd(),'static/users/logo_salesianos.png')
-    pdf.drawImage(logo, 40, 750, 120, 90,preserveAspectRatio=True)
+    user=User.objects.get(id=request.user.id)
+    logo=os.path.join(os.getcwd(),'static/users/logo_salesianos.jpg')
+    pdf.drawImage(logo, 40, 720, 120, 90,preserveAspectRatio=True)
     pdf.setFont("Helvetica-Bold", 21)
     pdf.drawString(230, 790, u"GESTIÓN OFERTAS")
     pdf.setFont("Helvetica-Bold", 17)
     pdf.drawString(200, 750, u"LISTA DE PROYECTOS EN LOS")
     pdf.drawString(205, 730, u"QUE PARTICIPA EL USUARIO:")
+    pdf.setFont("Helvetica-Oblique", 16)
+    pdf.drawString(285, 700, user.nombre + user.apellidos)
     FI = request.GET.get('FIPDF')
-    
+    FF = request.GET.get('FFPDF')
+    participa=Participa.objects.filter(idCliente=request.user.id).values_list('idProyecto', flat=True)
+    proyectos=Proyectos.objects.filter(id__in=participa,fechafin__range=(FI, FF) )
     pdf.setFont("Helvetica", 15)
+    Y=575
     
-    pdf.drawString(60,655, 'Fecha inicio:')
-    pdf.drawString(120,655, FI)
    
+    for p in proyectos:
+        
+        foto = Image(str(p.idCategoria.foto), 3*cm, 3*cm)  
+        datos = [('Titulo',p.titulo,foto)]
+        datos += [('Descripción', p.descripcion)]
+        datos += [('Nivel', str(p.nivel))]
+        datos += [('Categoria', p.idCategoria.nombre)]
+       
+        datosTable = Table(datos, colWidths=[5 * cm, 7 * cm, 7 * cm, 7 * cm])
+       
+        datosTable.setStyle(TableStyle(
+            [
+                
+                ('FONTSIZE', (0, 0), (-1, -1), 14),
+                
+                ('FONTNAME', (0,0), (0,-1), 'Helvetica'),
+                ('SPAN', (2, 0), (-1, -1)),
+            ]
+        ))
+       
+        datosTable.wrapOn(pdf, 800, 100)
+        
+        datosTable.drawOn(pdf, 40,Y)
+        Y=Y-120
+    
+    
+    
     pdf.showPage()
     pdf.save()
     pdf = buffer.getvalue()

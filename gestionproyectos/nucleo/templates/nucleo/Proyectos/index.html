@@ -94,8 +94,9 @@
 {% endif %}
     
 </table>
-<h4 class="text-secondary">Introduzca las fechas entre las que quiere filtrar en los proyectos en los que participa</h4>
+
 {% if request.user.is_cliente %}
+<h4 class="text-secondary">Introduzca las fechas entre las que quiere filtrar en los proyectos en los que participa</h4>
 <form class="form-check-inline" action="{% url 'nucleo:pdfCliente'%}">
   <div class="input-group">
     <span class="input-group-text" id="basic-addon1">Fechas: </span>
