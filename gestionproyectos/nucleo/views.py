@@ -356,7 +356,27 @@ def asignarRol(request,pk):
              'proyecto':proyecto}
     
     return render(request, 'nucleo/Proyectos/clienteProyecto.html', context)
+
+@empleadoTrue
+def finalizarProyecto(request,pk):
+    proyecto=Proyectos.objects.get(id=pk)
+    context={'proyecto':proyecto}
     
+    return render(request, 'nucleo/Proyectos/finalizarProyecto.html', context)
+
+@empleadoTrue
+def actualizarInforme(request,pk):
+    N=request.POST.get('informe')
+    NUM=request.POST.get('proyectoid')
+    
+    # ROLF=N.replace(" ","_")
+    Proyectos.objects.filter(pk=pk).update(informeFinal=N)
+    Proyectos.objects.filter(pk=pk).update(fechafin=datetime.today())
+    proyecto=Proyectos.objects.get(id=NUM, idEmpleado=request.user.id)
+    context={'proyecto':proyecto}
+    
+    return render(request, 'nucleo/Proyectos/finalizarProyecto.html', context)
+
 @empleadoTrue
 def indexRol(request):
     proyecto=Proyectos.objects.filter(idEmpleado=request.user.id)

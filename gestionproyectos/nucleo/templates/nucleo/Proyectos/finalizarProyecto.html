@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+
+{% block titulo %} Asignar Rol {% endblock %}
+
+{%block content %}
+
+
+<table class="table">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">Proyecto</th>
+      <th scope="col">Informe</th>
+     
+    </tr>
+  </thead>
+  <tbody class="table-secondary">
+    
+    <tr>
+      <td>{{ proyecto.titulo }}</td>
+      <td><form id="streamform" action="{% url 'nucleo:actualizarInforme' pk=proyecto.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="informe" value={{ proyecto.informeFinal }}>
+        <input type="hidden" name="proyectoid" value={{ proyecto.id }}>
+        <input class= "btn btn-secondary" type="submit" value="Actualizar informe" id="streambutton" />
+      </form>
+    </td>
+      
+    </tr>
+       
+  </tbody>
+</table>
+
+ {% endblock content%}
