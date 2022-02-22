@@ -28,6 +28,12 @@ from reportlab.platypus import SimpleDocTemplate, Image, Paragraph
 from reportlab.platypus.tables import Table, TableStyle
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.exceptions import ParseError
+from rest_framework import serializers, status
+from rest_framework.authtoken.models import Token
+
 def home(request):
     cliente=User.objects.filter(is_cliente=True)
     empleado=User.objects.filter(is_empleado=True)
@@ -406,7 +412,7 @@ def pdfCliente(request):
     FI = request.GET.get('FIPDF')
     FF = request.GET.get('FFPDF')
     participa=Participa.objects.filter(idCliente=request.user.id).values_list('idProyecto', flat=True)
-    proyectos=Proyectos.objects.filter(id__in=participa,fechafin__range=(FI, FF) )
+    proyectos=Proyectos.objects.filter(id__in=participa,fechainiciacion__range=(FI, FF) )
     pdf.setFont("Helvetica-Bold", 15)
     pdf.drawString(40, 640, u"Entre las fechas: " + FI +" y " +FF)
     
@@ -433,19 +439,19 @@ def pdfCliente(request):
             Y=Y-200
         F=1
         foto = Image(str(p.idCategoria.foto), 3*cm, 3*cm)  
-        datos = [('Titulo',P(p.titulo),foto)]
-        datos += [('Descripción', P(p.descripcion))]
-        datos += [('Nivel', P(str(p.nivel)))]
-        datos += [('Categoria', P(p.idCategoria.nombre))]
+        datos = [('Titulo:',P(p.titulo),foto)]
+        datos += [('Descripción:', P(p.descripcion))]
+        datos += [('Nivel:', P(str(p.nivel)))]
+        datos += [('Categoria:', P(p.idCategoria.nombre))]
        
-        datosTable = Table(datos, colWidths=[ 6*cm])
+        datosTable = Table(datos, colWidths=[6*cm])
        
         datosTable.setStyle(TableStyle(
             [
                 ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                 ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
                 ('FONTSIZE', (0, 0), (-1, -1), 14),
-                ("INNERGRID", (0, 0), (-1, -1), 0.5, colors.black),
+                
                 ('FONTNAME', (0,0), (0,-1), 'Helvetica'),
                 ('SPAN', (2, 0), (-1, -1)),
             ]
@@ -454,10 +460,6 @@ def pdfCliente(request):
         datosTable.wrapOn(pdf, 800, 100)
         
         datosTable.drawOn(pdf, 40,Y)
-        
-        
-    
-    
     
     pdf.save()
     pdf = buffer.getvalue()
@@ -465,3 +467,32 @@ def pdfCliente(request):
     response.write(pdf)
     
     return response
+
+class LoginAPI(APIView):
+    
+    def get(self,request,format=None):
+        return Response({'detail':'GET Response'})
+    def post(self, request, format=None):
+        try:
+            data=request.data
+        except ParseError as error:
+            return Response(
+                'INVALID JASON - {0}'.format(error.detail),
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if "user" not in data or "password" not in data:
+            return Response(
+                'Credenciales erroneas',
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        user = User.objects.get(username=data['user'])
+        if not user:
+            return Response(
+                'No usuario, crea uno',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        token = Token.objects.get_or_create(user=user)
+        print(user)
+        return Response({'detail' : 'POST answer', 'token': token[0].key})
