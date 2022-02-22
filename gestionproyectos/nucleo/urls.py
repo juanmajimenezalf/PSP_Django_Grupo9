@@ -57,7 +57,8 @@ urlpatterns = [
     path('proyectos/historialE', views.historialProyectosE.as_view(), name="historialE"),
     path('proyectos/historialC', views.historialProyectosC.as_view(), name="historialC"),
     path('proyectos/clienteProyecto/<int:pk>', views.clienteProyecto, name="clienteProyecto"),
-    path('proyectos/asignarRol/<int:pk>', views.asignarRol, name="asignarRol")
-    
+    path('proyectos/asignarRol/<int:pk>', views.asignarRol, name="asignarRol"),
+    path('proyectos/finalizarProyecto/<int:pk>', views.finalizarProyecto, name="finalizarProyecto"),
+    path('proyectos/actualizarInforme/<int:pk>', views.actualizarInforme, name="actualizarInforme"),
     
 ]

@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-{% block titulo %} Historial Proyectos {% endblock %}
+
 
 {%block content %}
 {% if request.user.is_cliente %}
@@ -13,7 +13,7 @@
         <th scope="col">Fecha Inicio</th>
         <th scope="col">Fecha Fin</th>
         <th scope="col">Informe</th>
-        <th scope="col">Categoria</th>
+        <!-- <th scope="col">Categoria</th> -->
         
       </tr>
     </thead>
@@ -26,7 +26,7 @@
         <td>{{ p.fechainiciacion }}</td>
         <td>{{ p.fechafin }}</td>
         <td>{{ p.informeFinal }}</td>
-        <td><img src="{{ p.idcategoria.foto.url}}" width="60" height="60"></td>
+        <!-- <td><img src="{{ p.idcategoria.foto.url}}" width="60" height="60"></td> -->
       </tr>
      {% endfor %}
     
@@ -37,4 +37,4 @@
 {% endif %}
 {% endif %}    
 
-{% endblock content%}
+{% endblock content %}
