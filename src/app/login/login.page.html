@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Inicio de sesion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+  <ion-content padding>
+ 
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Usuario</ion-label>
+      <ion-input [formControl]="username" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Constraseña</ion-label>
+      <ion-input [formControl]="password" type="password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-button class="btn btn-primary"expand="full" (click)="login()">Iniciar sesion</ion-button>
+</ion-content>

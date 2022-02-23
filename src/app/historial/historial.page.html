@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historial de proyectos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+      <ion-col
+        *ngFor="let p of proyectos">
+        <ion-card color="light">
+          <ion-item color="dark">
+            <h1  style="font-size: 16px;">Proyecto : {{ p.titulo }} {{p.descripcion }}</h1>
+          </ion-item>
+          <ion-item>
+            <h2  style="font-size: 15px;">{{ p.nivel  }}</h2>
+            <h2  style="font-size: 15px;">" " {{ p.idCategoria.nombre  }}</h2>
+          </ion-item>
+          <ion-item>
+            <h3  style="font-size: 15px;">Fecha inicio : {{ p.fechainiciacion }}</h3>
+            <h3  style="font-size: 15px;">/ Fecha inicio : {{ p.fechafin }}</h3>
+          </ion-item>          
+        </ion-card>
+      </ion-col>
+</ion-content>
