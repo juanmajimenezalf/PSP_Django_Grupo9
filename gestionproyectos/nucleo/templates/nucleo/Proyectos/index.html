@@ -75,7 +75,9 @@
       {%endif%}
        {% if e.idEmpleado == request.user %}
         <a class="btn btn-primary" href="{%url 'nucleo:clienteProyecto' pk=e.id %}">Ver Clientes</a>
-        <a class="btn btn-primary" href="{%url 'nucleo:finalizarProyecto' pk=e.id %}">Finalizar</a>
+          {%if e.informeFinal == null %}
+          <a class="btn btn-primary" href="{%url 'nucleo:finalizarProyecto' pk=e.id %}">Finalizar</a>
+          {% endif %}
         <a class="btn btn-primary" href="{%url 'nucleo:editarProyecto' pk=e.id %}">Editar</a>
         <a class="btn btn-danger" onclick="return confirm('¿Está seguro que desea eliminar este proyecto?')" href="{%url 'nucleo:borrarProyecto' pk=e.id %}">Eliminar</a>
       {% endif %}

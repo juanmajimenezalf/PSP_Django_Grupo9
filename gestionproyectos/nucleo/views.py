@@ -5,7 +5,8 @@ from fileinput import filename
 import os
 from re import I
 import string
-from tkinter import N
+from tkinter import CURRENT, N
+from urllib import response
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -14,6 +15,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, UpdateView,DeleteView, ListView
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
+from nucleo.serializers import ProyectosSerializers
 from nucleo.decorators import clienteTrue, empleadoTrue, noAdmin
 from datetime import datetime
 from nucleo.forms import UserForm, EditUserForm, proyectosForm, ClienteForm, categoriasForm
@@ -33,6 +35,8 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
 from rest_framework import serializers, status
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+
 
 def home(request):
     cliente=User.objects.filter(is_cliente=True)
@@ -367,15 +371,11 @@ def finalizarProyecto(request,pk):
 @empleadoTrue
 def actualizarInforme(request,pk):
     N=request.POST.get('informe')
-    NUM=request.POST.get('proyectoid')
     
-    # ROLF=N.replace(" ","_")
+    
     Proyectos.objects.filter(pk=pk).update(informeFinal=N)
     Proyectos.objects.filter(pk=pk).update(fechafin=datetime.today())
-    proyecto=Proyectos.objects.get(id=NUM, idEmpleado=request.user.id)
-    context={'proyecto':proyecto}
-    
-    return render(request, 'nucleo/Proyectos/finalizarProyecto.html', context)
+    return redirect('nucleo:indexProyectos')
 
 @empleadoTrue
 def indexRol(request):
@@ -506,13 +506,33 @@ class LoginAPI(APIView):
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        user = User.objects.get(username=data['user'])
+        user = User.objects.get(username=data["user"])
         if not user:
             return Response(
                 'No usuario, crea uno',
                 status=status.HTTP_404_NOT_FOUND
             )
-
+        if user.is_cliente == False or user.activo==0:
+            return Response(
+                'Usuario no autorizado',
+                status=status.HTTP_404_NOT_FOUND
+            )
         token = Token.objects.get_or_create(user=user)
         print(user)
-        return Response({'detail' : 'POST answer', 'token': token[0].key})
+        return Response({'token': token[0].key})
+
+class Historial_APIView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, format=None, *args, **kwargs):
+        participa=Participa.objects.filter(idCliente=request.user.id).values_list('idProyecto', flat=True)
+        print(participa)
+        proyectos=Proyectos.objects.filter(id__in=participa,fechainiciacion__lt=datetime.today() )
+        print(proyectos)
+        serializer= ProyectosSerializers(proyectos,many=True)
+        return Response(serializer.data)
+    def post(self, request, format=None):
+        serializer = ProyectosSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

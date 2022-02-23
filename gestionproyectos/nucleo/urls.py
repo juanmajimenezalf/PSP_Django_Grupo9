@@ -45,6 +45,8 @@ urlpatterns = [
     path('proyectos/filter', views.ProyectoFilter.as_view(), name="filterProyecto"),
     path('proyectos/filter/<int:pk>', views.proyectoSiguiente.as_view(), name="filterProyecto"),
     path('proyectos/update/<int:pk>', views.proyectoUpdate.as_view(), name="editarProyecto"),
+    path('proyectos/finalizarProyecto/<int:pk>', views.finalizarProyecto, name="finalizarProyecto"),
+    path('proyectos/actualizarInforme/<int:pk>', views.actualizarInforme, name="actualizarInforme"),
     path('proyectos/delete/<int:pk>', views.borrarProyecto, name="borrarProyecto"),
     
     path('Participa/create/<int:pk>', views.ParticipaCreate, name="crearParticipa"),
@@ -59,8 +61,8 @@ urlpatterns = [
     path('proyectos/clienteProyecto/<int:pk>', views.clienteProyecto, name="clienteProyecto"),
     path('proyectos/asignarRol/<int:pk>', views.asignarRol, name="asignarRol"),
     
-    path('api/login', views.LoginAPI.as_view(), name="asignarRol"),
-    path('proyectos/finalizarProyecto/<int:pk>', views.finalizarProyecto, name="finalizarProyecto"),
-    path('proyectos/actualizarInforme/<int:pk>', views.actualizarInforme, name="actualizarInforme"),
+    path('api/login', views.LoginAPI.as_view(), name="apilogin"),
+    path('api/Historial', views.Historial_APIView.as_view(), name="apihistorial"),
+    
     
 ]
