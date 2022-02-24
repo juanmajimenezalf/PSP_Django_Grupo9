@@ -10,11 +10,11 @@
         *ngFor="let p of proyectos">
         <ion-card color="light"> 
           <ion-item color="dark">
-            <h1  style="font-size: 16px;">Proyecto : {{ p.titulo }} {{p.descripcion }}</h1>
+            <h1  style="font-size: 16px;">Proyecto : {{ p.titulo }} / {{p.descripcion }}</h1>
           </ion-item>
           <ion-item>
-            <h2  style="font-size: 15px;">{{ p.nivel  }}</h2>
-            <h2  style="font-size: 15px;">" " {{ p.idCategoria.nombre  }}</h2>
+            <h2  style="font-size: 15px;">Nivel:c {{ p.nivel  }}</h2>
+            <h2  style="font-size: 15px;"> / Categoria: {{ p.idCategoria.nombre  }}</h2>
           </ion-item>
           <ion-item>
             <h3  style="font-size: 15px;">Fecha inicio : {{ p.fechainiciacion }}</h3>
