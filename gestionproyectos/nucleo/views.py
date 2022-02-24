@@ -440,7 +440,7 @@ def pdfCliente(request):
     pdf.drawString(40, 640, u"Entre las fechas: " + FI +" y " +FF)
     
     pdf.drawString(540, 20, "1")
-    Y=500
+    Y=465
     style = getSampleStyleSheet()['Normal']
     def P(txt):
         return Paragraph(txt, style)

@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from nucleo.models import User
 
 
-def clienteTrue(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def clienteTrue(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='home'):
    
     actual_decorator = user_passes_test(
         lambda u: u.activo and u.is_cliente,
@@ -33,7 +33,7 @@ def same_user(func):
 
     return check_and_call
 
-def empleadoTrue(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def empleadoTrue(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='home'):
    
     actual_decorator = user_passes_test(
         lambda u: u.is_active and u.is_empleado,
@@ -44,10 +44,10 @@ def empleadoTrue(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_u
         return actual_decorator(function)
     return actual_decorator
 
-def noAdmin(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def noAdmin(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='home'):
        
     actual_decorator = user_passes_test(
-        lambda u: u.is_active and u.is_cliente or u.is_active and u.is_empleado,
+        lambda u: u.activo and u.is_cliente or u.is_active and u.is_empleado,
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )
