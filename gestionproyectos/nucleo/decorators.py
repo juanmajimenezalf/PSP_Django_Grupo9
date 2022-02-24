@@ -8,7 +8,7 @@ from nucleo.models import User
 def clienteTrue(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
    
     actual_decorator = user_passes_test(
-        lambda u: u.is_active and u.is_cliente,
+        lambda u: u.activo and u.is_cliente,
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )
