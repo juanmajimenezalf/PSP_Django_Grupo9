@@ -42,7 +42,7 @@ class Proyectos(models.Model):
     idCategoria = models.ForeignKey(Categorias, on_delete=models.CASCADE,null=True)
     
     def __str__(self):
-        return self.titulo
+        return str(self.titulo)
 
 
 class Participa(models.Model):
