@@ -29,7 +29,7 @@
   </form>
   
 </nav>
-<br>
+<br/ >
 </br>
 {% if request.user.is_empleado %}
 <a class="btn btn-secondary" href="{% url 'nucleo:crearProyecto' %}">Añadir proyecto</a>
@@ -107,7 +107,7 @@
     <span class="input-group-text" id="basic-addon1">Fecha Final: </span>
     <input type="date" class="form-control" name="FFPDF">
   </div>
-  
+  <br/ >
   <button type="submit" class="btn btn-secondary">Generar PDF</button>
 
 </form>

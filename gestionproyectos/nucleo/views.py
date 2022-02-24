@@ -365,14 +365,16 @@ def asignarRol(request,pk):
 def finalizarProyecto(request,pk):
     proyecto=Proyectos.objects.get(id=pk)
     context={'proyecto':proyecto}
-    
+    print(proyecto.idEmpleado)
+    if(proyecto.idEmpleado != request.user or proyecto.informeFinal is not None):
+        return redirect('nucleo:indexProyectos')
     return render(request, 'nucleo/Proyectos/finalizarProyecto.html', context)
 
 @empleadoTrue
 def actualizarInforme(request,pk):
+    
     N=request.POST.get('informe')
-    
-    
+  
     Proyectos.objects.filter(pk=pk).update(informeFinal=N)
     Proyectos.objects.filter(pk=pk).update(fechafin=datetime.today())
     return redirect('nucleo:indexProyectos')
