@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class RestServiceService {
   apiUrl = 'http://127.0.0.1:8000/api';
   data_user:any;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private alertControler: AlertController) { }
 
 
   async login(username, password) {
@@ -21,8 +22,15 @@ export class RestServiceService {
           this.data_user = data;
           console.log(this.data_user);
           resolve(data);
-        }, err => {
+        }, async err => {
           console.log(err);
+          const alert = await this.alertControler.create({
+            header: 'Fallo al iniciar sesion',
+            message: 'Credenciales incorrectas',
+            buttons: ['Aceptar'],
+          });
+          await alert.present();
+          return;
         });
     });
   }
@@ -38,6 +46,7 @@ export class RestServiceService {
           resolve(data);
         }, err => {
           console.log(err);
+         
         });
     });
   }
