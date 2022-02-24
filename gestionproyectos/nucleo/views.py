@@ -12,6 +12,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.hashers import make_password, check_password
 from django.views.generic import CreateView, UpdateView,DeleteView, ListView
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
@@ -509,27 +510,29 @@ class LoginAPI(APIView):
             )
 
         user = User.objects.get(username=data["user"])
+        
         if not user:
             return Response(
                 'No usuario, crea uno',
                 status=status.HTTP_404_NOT_FOUND
             )
-        if user.is_cliente == False or user.activo==0:
+        if user.is_cliente == False or user.activo==0 or check_password(data["password"],user.password)==False:
             return Response(
                 'Usuario no autorizado',
                 status=status.HTTP_404_NOT_FOUND
             )
+        
         token = Token.objects.get_or_create(user=user)
-        print(user)
+        
         return Response({'token': token[0].key})
 
 class Historial_APIView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None, *args, **kwargs):
         participa=Participa.objects.filter(idCliente=request.user.id).values_list('idProyecto', flat=True)
-        print(participa)
+        
         proyectos=Proyectos.objects.filter(id__in=participa,fechainiciacion__lt=datetime.today() )
-        print(proyectos)
+        
         serializer= ProyectosSerializers(proyectos,many=True)
         return Response(serializer.data)
     def post(self, request, format=None):
