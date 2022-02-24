@@ -63,6 +63,7 @@ class empleadoCreate(CreateView):
             empleado=form.save(commit=False)
             empleado.fechaAlta = datetime.today()
             empleado.is_empleado = True
+            empleado.is_cliente = False
             empleado.set_password(form.cleaned_data["password"])
             empleado.is_active = True
             empleado.save()
@@ -107,6 +108,7 @@ class clienteCreate(CreateView):
             cliente.fechaAlta = datetime.today()
             cliente.activo = False
             cliente.is_cliente = True
+            cliente.is_empleado = False
             cliente.set_password(form.cleaned_data["password"])
             cliente.save()
             
@@ -516,12 +518,17 @@ class LoginAPI(APIView):
                 'No usuario, crea uno',
                 status=status.HTTP_404_NOT_FOUND
             )
-        if user.is_cliente == False or user.activo==0 or check_password(data["password"],user.password)==False:
+        if user.is_cliente == False or user.activo==0:
+            
             return Response(
-                'Usuario no autorizado',
-                status=status.HTTP_404_NOT_FOUND
-            )
-        
+                    'Usuario no autorizado',
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        if check_password(data["password"],user.password)==False:
+                return Response(
+                    'Usuario no autorizado',
+                    status=status.HTTP_404_NOT_FOUND
+                )
         token = Token.objects.get_or_create(user=user)
         
         return Response({'token': token[0].key})
